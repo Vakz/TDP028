@@ -1,0 +1,15 @@
+Här ska 3 kunkurerande appa länkas och beskrivas.
+
+Tänk på att en konkurent är en app som tar din kunds tid från dig genom att
+ge en likvärdig eller alternativ, relaterad tjänst. De ger dina kunder ett liknande värde som ersätter ditt - inte kopierar ditt.
+
+Även vanliga funktioner i mobiler är konkurenter. T.ex. finns ju nu mer lampor i Android
+från början och man behveör inte ladda ner en särksilld app för det. Miniräknare finns. Kalender finns. 
+
+OM du inte hittar något behveör du bredda din syn på vad du kan söka för det är inte så sannorlikt att
+det inte finns något. Det är ok att tänka mer i vilken kategori din app hamnar.
+(Hittar du under alla omständigheter inte något får du hitta på en app att göra en konkurentanalys mot.)
+
+Reflektera över hur du kan positionera din app i förhållande till konkurrenter. Hur måste du designa din app för att skilja dig eller
+fokusera mer på någoin relevant delmängd för att bli unik i förhållande till konkurenterna.
+1.
