@@ -8,6 +8,6 @@ Databas:
 App:
     En settings-sida där max avstånd kan ställas in. (Minuter vs Längd)
     Markera en öl som testad (spara id)
+    Hitta öl baserat på bryggeri eller namn
     Hitta otestad öl i närheten där användaren kan ange om det ska vara inom en populär kategori (ale om många ale testats) eller motsatsen (hitta öl inom minst testad kategori)
     Hitta pubbar i närheten utan parametrar
-    
