@@ -6,6 +6,7 @@ Databas:
         Varje öl har ett namn, id, bryggeri, kategori
         
 App:
+    Få fram adress baserat på koordinater
     En settings-sida där max avstånd kan ställas in. (Minuter vs Längd)
     Markera en öl som testad (spara id)
     Hitta öl baserat på bryggeri eller namn
