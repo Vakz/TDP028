@@ -1,23 +1,16 @@
-En startprojekt för TDP028 HT2.
-Klona och bygg vidare på ditt egna projekt så får du med alla filer med instruktioner i.
+Backend versionshanteras separat i repot https://github.com/Vakz/TDP028_Backend
 
-Glöm inte att lägga till ditt klonade projekt till
-gruppen TDP028-2015 så att jag kan granska.
-
-Använd markdown på länkarna så att jag kan klicka på dem:
-[Länk till IDA](https://www.ida.liu.se)
-
-
-Checka in din "src" här. Det är den jag granskar.
-
-Jag kommer att använda mig av koden, commit-kommentarer och incheckningsfrekvens vid bedömning för
-både godkännande och betyg så committa regelbundent och lämna relevanta kommentarer som hjälper mig se vad du gör.
-Jag kan bara granska och godkänna på det som sysn och på kvaliteten av det som syns.
-
-Se commit-kommenterar som reflektionstillfällen och summering av arbete - utvecklardagbok.
-
-Detta är en bra och naturlig examinationsmetod för IP men även mycket
-relevant utanför universitetet för kunder och kollegor som kan koda.
-
-
-Inlämningar av annat material görs i tdp028-redovisningar i de filer som finns där för enkel hantering.  
+Databas:
+    Collection Pub:
+        Varje pub har namn, id, koordinater, lista med all öl som serveras
+    
+    Collection Beer:
+        Varje öl har ett namn, id, bryggeri, kategori
+        
+App:
+    Få fram adress baserat på koordinater
+    En settings-sida där max avstånd kan ställas in. (Minuter vs Längd)
+    Markera en öl som testad (spara id)
+    Hitta öl baserat på bryggeri eller namn
+    Hitta otestad öl i närheten där användaren kan ange om det ska vara inom en populär kategori (ale om många ale testats) eller motsatsen (hitta öl inom minst testad kategori)
+    Hitta pubbar i närheten utan parametrar
