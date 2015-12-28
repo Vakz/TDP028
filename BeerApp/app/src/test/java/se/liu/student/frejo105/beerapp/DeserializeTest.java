@@ -11,13 +11,13 @@ import org.json.JSONException;
 import org.junit.Test;
 
 import se.liu.student.frejo105.beerapp.Model.Pub;
-import se.liu.student.frejo105.beerapp.Serializers.LocationDeserializer;
+import se.liu.student.frejo105.beerapp.API.Serialization.LocationDeserializer;
 import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.Model.BeerType;
 import se.liu.student.frejo105.beerapp.Model.Brewery;
-import se.liu.student.frejo105.beerapp.Serializers.BeerDeserializer;
+import se.liu.student.frejo105.beerapp.API.Serialization.BeerDeserializer;
 import se.liu.student.frejo105.beerapp.Model.Location;
-import se.liu.student.frejo105.beerapp.Serializers.PubDeserializer;
+import se.liu.student.frejo105.beerapp.API.Serialization.PubDeserializer;
 
 /**
  * Created by vakz on 12/27/15.

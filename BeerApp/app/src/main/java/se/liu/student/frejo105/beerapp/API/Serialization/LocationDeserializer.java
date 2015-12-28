@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp.Serializers;
+package se.liu.student.frejo105.beerapp.API.Serialization;
 
 /**
  * Created by vakz on 12/27/15.
