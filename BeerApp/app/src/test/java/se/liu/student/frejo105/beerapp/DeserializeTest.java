@@ -70,7 +70,8 @@ public class DeserializeTest {
         JsonElement jsonObject = jp.parse("{\"type\": \"Point\", \"coordinates\": [15.2, 48.3342]}");
         Location loc = gson.fromJson(jsonObject, Location.class);
         assertEquals("Point", loc.type);
-        assertArrayEquals(new double[]{15.2, 48.3342}, loc.coordinates, 0.000001);
+        assertEquals(15.2, loc.longitude, 0.00001);
+        assertEquals(48.3342, loc.latitude, 0.00001);
     }
 
     @Test
@@ -86,7 +87,8 @@ public class DeserializeTest {
         Pub p = gson.fromJson(jsonObject, Pub.class);
         assertEquals("TestPub", p.name);
         assertEquals("567929b63bf8eb42146e93d1", p.serves.get(0)._id);
-        assertArrayEquals(new double[]{15.2, 17.234}, p.loc.coordinates, 0.000001);
+        assertEquals(15.2, p.loc.longitude, 0.00001);
+        assertEquals(17.234, p.loc.latitude, 0.00001);
     }
 
     @Test
@@ -108,6 +110,7 @@ public class DeserializeTest {
         assertEquals("567929b63bf8eb42146e93d1", p.serves.get(0)._id);
         assertEquals("Lager", p.serves.get(0).beerType.typeName);
         assertEquals("5679267f8e8f2a83128f5e27", p.serves.get(0).brewery._id);
-        assertArrayEquals(new double[]{15.2, 17.234}, p.loc.coordinates, 0.000001);
+        assertEquals(15.2, p.loc.longitude, 0.00001);
+        assertEquals(17.234, p.loc.latitude, 0.00001);
     }
 }
