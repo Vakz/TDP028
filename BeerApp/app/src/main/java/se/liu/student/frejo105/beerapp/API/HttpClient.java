@@ -1,35 +1,135 @@
 package se.liu.student.frejo105.beerapp.API;
 
-import com.google.gson.Gson;
+import android.content.res.Resources;
+
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.json.JSONObject;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.Serialization.RegisteredGson;
 import se.liu.student.frejo105.beerapp.Model.Beer;
+import se.liu.student.frejo105.beerapp.Model.Location;
+import se.liu.student.frejo105.beerapp.Model.Pub;
 
-/**
- * Created by vakz on 12/27/15.
- */
+import se.liu.student.frejo105.beerapp.R;
+import se.liu.student.frejo105.beerapp.Utility;
 public class HttpClient {
     private static final String address = "http://vakz.se:8888/";
     private static AsyncHttpClient httpClient = new AsyncHttpClient();
 
-    public static void getBeer(String id, final RequestCompleteCallback cb) {
-        httpClient.get(getCompleteUrl("Beer"), new RequestParams("id", id), new TextHttpResponseHandler() {
+    public static void getBeer(String id, final RequestCompleteCallback<Beer> cb) {
+        if (Utility.isNullEmptyOrWhitespace(id))
+        {
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            return;
+        }
+        RequestParams params = new RequestParams("id", id);
+        makeCall(getCompleteUrl("Beer"), params, Beer.class, cb);
+    }
+
+    public static void search(String searchword, final RequestCompleteCallback<List<Beer>> cb) {
+        if (Utility.isNullEmptyOrWhitespace(searchword))
+        {
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            return;
+        }
+        RequestParams params = new RequestParams("searchword", searchword);
+        makeArrayCall(getCompleteUrl("Search"), params, Beer.class, cb);
+    }
+
+    public static void suggestion(Location coordinates, int distance, SuggestionFilters filter, final RequestCompleteCallback<List<Pub>> cb) {
+        RequestParams params = new RequestParams();
+        params.put("lng", coordinates.longitude);
+        params.put("lat", coordinates.latitude);
+        if (!filter.excludeBeers.isEmpty()) {
+            params.put("tried", RegisteredGson.getInstance().toJson(filter.excludeBeers));
+        }
+        if (!filter.excludeTypes.isEmpty()) {
+            params.put("notoftype", RegisteredGson.getInstance().toJson(filter.excludeTypes));
+        }
+        if (!filter.excludeTypes.isEmpty()) {
+            params.put("oftype", RegisteredGson.getInstance().toJson(filter.onlyIncludeTypes));
+        }
+        if (distance > 0) params.put("distance", distance);
+        makeArrayCall(getCompleteUrl("Suggestion"), params, Pub.class, cb);
+    }
+
+
+    public static void getMenu(String id, final RequestCompleteCallback<List<Beer>> cb) {
+        if (Utility.isNullEmptyOrWhitespace(id))
+        {
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            return;
+        }
+        RequestParams params = new RequestParams("id", id);
+        makeArrayCall(getCompleteUrl("Menu"), params, Beer.class, cb);
+    }
+
+    public static void getPub(String id, boolean incMenu, final RequestCompleteCallback<Pub> cb) {
+        if (Utility.isNullEmptyOrWhitespace(id))
+        {
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            return;
+        }
+        RequestParams params = new RequestParams("id", id);
+        if (incMenu) params.put("incMenu", "true");
+        makeCall(getCompleteUrl("Pub"), params, Pub.class, cb);
+    }
+
+    public static void getNearbyPubs(Location loc, int distance, final RequestCompleteCallback<List<Pub>> cb) {
+        RequestParams params = new RequestParams();
+        params.put("lng", loc.longitude);
+        params.put("lat", loc.latitude);
+        if(distance > 0) params.put("distance", distance);
+        makeArrayCall(getCompleteUrl("Pubs"), params, Pub.class, cb);
+    }
+
+    public static void getPubsServing(Location loc, String id, int distance, final RequestCompleteCallback<List<Pub>> cb) {
+        if (Utility.isNullEmptyOrWhitespace(id))
+        {
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            return;
+        }
+
+        RequestParams params = new RequestParams();
+        params.put("lng", loc.longitude);
+        params.put("lat", loc.latitude);
+        params.put("id", id);
+        if(distance > 0) params.put("distance", distance);
+        makeArrayCall(getCompleteUrl("PubsServing"), params, Pub.class, cb);
+    }
+
+    private static <T> void makeArrayCall(String url, RequestParams params, final Type typeOfT, final RequestCompleteCallback<List<T>> cb) {
+        httpClient.get(url, params, new TextHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String response) {
-                Gson gson = new Gson();
-                cb.onSuccess(RegisteredGson.getInstance().fromJson(response, Beer.class));
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                cb.onFailure(new HttpResponseException(statusCode, responseString));
             }
 
             @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                ArrayList<T> l = RegisteredGson.getInstance().fromJsonArray(responseString, typeOfT);
+                cb.onSuccess(l);
+            }
+        });
+    }
+
+    private static <T> void makeCall(String url, RequestParams params, final Type typeOfT, final RequestCompleteCallback<T> cb) {
+        httpClient.get(url, params, new TextHttpResponseHandler() {
+            @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                cb.onFailure(responseString);
+                cb.onFailure(new HttpResponseException(statusCode, responseString));
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                cb.onSuccess((T)RegisteredGson.getInstance().fromJsonArray(responseString, typeOfT));
             }
         });
     }

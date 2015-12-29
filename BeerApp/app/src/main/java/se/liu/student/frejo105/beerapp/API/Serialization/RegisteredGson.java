@@ -2,12 +2,15 @@ package se.liu.student.frejo105.beerapp.API.Serialization;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.Model.Location;
@@ -39,5 +42,20 @@ public class RegisteredGson {
 
     public <T> T fromJson(String string, Type typeOfT) {
         return gson.fromJson(string, typeOfT);
+    }
+
+    public <T> ArrayList<T> fromJsonArray(String string, Type typeOfT) {
+        JsonParser jp = new JsonParser();
+        JsonElement e = jp.parse(string);
+        JsonArray array = e.getAsJsonArray();
+        ArrayList<T> items = new ArrayList<>();
+        for (int i = 0; i < array.size(); ++i) {
+            items.add((T) gson.fromJson(array.get(i), typeOfT));
+        }
+        return items;
+    }
+
+    public String toJson(Object o) {
+        return gson.toJson(o);
     }
 }

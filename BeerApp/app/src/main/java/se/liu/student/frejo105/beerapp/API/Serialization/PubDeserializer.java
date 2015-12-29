@@ -34,10 +34,12 @@ public class PubDeserializer implements JsonDeserializer<Pub> {
         for (int i = 0; i < jsonServes.size(); ++i) {
             JsonElement e = jsonServes.get(i);
             Beer beer = new Beer();
+            // Testing if we received a unpopulated pub
             try {
                 beer._id = e.getAsString();
             }
             catch(Exception je) {
+                // Received a populated pub
                 beer = gson.fromJson(e, Beer.class);
             }
             pub.serves.add(beer);

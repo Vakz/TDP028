@@ -5,5 +5,6 @@ package se.liu.student.frejo105.beerapp.Model;
  */
 public class Location {
     public String type;
-    public double[] coordinates;
+    public double longitude;
+    public double latitude;
 }
