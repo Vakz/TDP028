@@ -8,17 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context="se.liu.student.frejo105.beerapp.MainActivity">
 
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_gravity="end"
-        android:gravity="end"
-        android:background="#cad9e4">
-    </android.support.v7.widget.Toolbar>
-
     <include layout="@layout/content_main" />
 
 </LinearLayout>
