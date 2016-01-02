@@ -5,4 +5,7 @@
     <string name="title_activity_display_beer">DisplayBeerActivity</string>
     <string name="drawer_toggle_open">Opening drawer menu</string>
     <string name="drawer_toggle_close">Closing drawer menu</string>
+    <string name="title_activity_search_beer">SearchBeerActivity</string>
+    <string name="retry">Retry</string>
+    <string name="thumbnail">Thumbnail</string>
 </resources>

@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import org.json.JSONException;
 import org.junit.Test;
 
+import se.liu.student.frejo105.beerapp.API.Serialization.RegisteredGson;
 import se.liu.student.frejo105.beerapp.Model.Pub;
 import se.liu.student.frejo105.beerapp.API.Serialization.LocationDeserializer;
 import se.liu.student.frejo105.beerapp.Model.Beer;
@@ -26,7 +27,7 @@ public class DeserializeTest {
 
     @Test
     public void deserializeBeerType() throws JSONException {
-        Gson gson = new Gson();
+        RegisteredGson gson = RegisteredGson.getInstance();
         JsonParser jp = new JsonParser();
         JsonElement jsonObject = jp.parse("{\"_id\": \"567926ddcf1fd0dd120efd5b\", \"typeName\": \"Lager\"}").getAsJsonObject();
         BeerType bt = gson.fromJson(jsonObject, BeerType.class);
@@ -36,7 +37,7 @@ public class DeserializeTest {
 
     @Test
     public void deserializeBrewery() throws JSONException {
-        Gson gson = new Gson();
+        RegisteredGson gson = RegisteredGson.getInstance();
         JsonParser jp = new JsonParser();
         JsonElement jsonObject = jp.parse("{\"_id\": \"5679267f8e8f2a83128f5e27\", \"name\": \"Brewery\"}");
         Brewery brewery = gson.fromJson(jsonObject, Brewery.class);
@@ -46,9 +47,7 @@ public class DeserializeTest {
 
     @Test
     public void deserializeBeer() throws JSONException {
-        GsonBuilder gs = new GsonBuilder();
-        gs.registerTypeAdapter(Beer.class, new BeerDeserializer());
-        Gson gson = gs.create();
+        RegisteredGson gson = RegisteredGson.getInstance();
         JsonParser jp = new JsonParser();
         String brewery = "{\"_id\": \"5679267f8e8f2a83128f5e27\", \"name\": \"Brewery\"}";
         String beertype = "{\"_id\": \"567926ddcf1fd0dd120efd5b\", \"typeName\": \"Lager\"}";
@@ -63,9 +62,7 @@ public class DeserializeTest {
 
     @Test
     public void deserializeLocation() throws JSONException {
-        GsonBuilder gs = new GsonBuilder();
-        gs.registerTypeAdapter(Location.class, new LocationDeserializer());
-        Gson gson = gs.create();
+        RegisteredGson gson = RegisteredGson.getInstance();
         JsonParser jp = new JsonParser();
         JsonElement jsonObject = jp.parse("{\"type\": \"Point\", \"coordinates\": [15.2, 48.3342]}");
         Location loc = gson.fromJson(jsonObject, Location.class);
@@ -76,9 +73,7 @@ public class DeserializeTest {
 
     @Test
     public void deserializeUnpopulatedPub() throws JSONException {
-        GsonBuilder gs = new GsonBuilder();
-        gs.registerTypeAdapter(Pub.class, new PubDeserializer());
-        Gson gson = gs.create();
+        RegisteredGson gson = RegisteredGson.getInstance();
         JsonParser jp = new JsonParser();
         String location = "{\"type\": \"Point\", \"coordinates\": [15.2, 17.234]}";
         String pub = "{\"_id\": \"567bcb3eb2b6563f11353b15\" ,\"name\": \"TestPub\", \"serves\": [\"567929b63bf8eb42146e93d1\"], \"loc\": %s}";
@@ -93,9 +88,7 @@ public class DeserializeTest {
 
     @Test
     public void deserializePopulatedPub() throws JSONException {
-        GsonBuilder gs = new GsonBuilder();
-        gs.registerTypeAdapter(Pub.class, new PubDeserializer());
-        Gson gson = gs.create();
+        RegisteredGson gson = RegisteredGson.getInstance();
         JsonParser jp = new JsonParser();
         String location = "{\"type\": \"Point\", \"coordinates\": [15.2, 17.234]}";
         String brewery = "{\"_id\": \"5679267f8e8f2a83128f5e27\", \"name\": \"Brewery\"}";

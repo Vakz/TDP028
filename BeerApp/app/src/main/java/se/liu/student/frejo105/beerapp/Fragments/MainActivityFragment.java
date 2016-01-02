@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp;
+package se.liu.student.frejo105.beerapp.Fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -28,24 +28,6 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View w = inflater.inflate(fragment_main, container, false);
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpClient.search("heineken", new RequestCompleteCallback<List<Beer>>() {
-                    @Override
-                    public void onSuccess(List<Beer> result) {
-                        System.out.println(result.get(1).name);
-                    }
-
-                    @Override
-                    public void onFailure(HttpResponseException hre) {
-                        System.out.println(hre.getMessage());
-                    }
-                });
-            }
-        });
-        t.run();
-        return w;
+        return inflater.inflate(fragment_main, container, false);
     }
 }

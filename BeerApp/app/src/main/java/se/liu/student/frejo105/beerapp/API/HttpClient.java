@@ -3,9 +3,11 @@ package se.liu.student.frejo105.beerapp.API;
 import android.content.res.Resources;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import se.liu.student.frejo105.beerapp.Model.Location;
 import se.liu.student.frejo105.beerapp.Model.Pub;
 
 import se.liu.student.frejo105.beerapp.R;
-import se.liu.student.frejo105.beerapp.Utility;
+import se.liu.student.frejo105.beerapp.Utility.Utility;
 public class HttpClient {
     private static final String address = "http://vakz.se:8888/";
     private static AsyncHttpClient httpClient = new AsyncHttpClient();
@@ -26,7 +28,7 @@ public class HttpClient {
     public static void getBeer(String id, final RequestCompleteCallback<Beer> cb) {
         if (Utility.isNullEmptyOrWhitespace(id))
         {
-            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.invalid_id)));
             return;
         }
         RequestParams params = new RequestParams("id", id);
@@ -64,7 +66,7 @@ public class HttpClient {
     public static void getMenu(String id, final RequestCompleteCallback<List<Beer>> cb) {
         if (Utility.isNullEmptyOrWhitespace(id))
         {
-            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.invalid_id)));
             return;
         }
         RequestParams params = new RequestParams("id", id);
@@ -74,7 +76,7 @@ public class HttpClient {
     public static void getPub(String id, boolean incMenu, final RequestCompleteCallback<Pub> cb) {
         if (Utility.isNullEmptyOrWhitespace(id))
         {
-            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.invalid_id)));
             return;
         }
         RequestParams params = new RequestParams("id", id);
@@ -93,7 +95,7 @@ public class HttpClient {
     public static void getPubsServing(Location loc, String id, int distance, final RequestCompleteCallback<List<Pub>> cb) {
         if (Utility.isNullEmptyOrWhitespace(id))
         {
-            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.invalid_id)));
             return;
         }
 
@@ -103,6 +105,26 @@ public class HttpClient {
         params.put("id", id);
         if(distance > 0) params.put("distance", distance);
         makeArrayCall(getCompleteUrl("PubsServing"), params, Pub.class, cb);
+    }
+
+    public static void getImage(String id, File file, final RequestCompleteCallback<File> cb) {
+        if (Utility.isNullEmptyOrWhitespace(id))
+        {
+            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.invalid_id)));
+            return;
+        }
+        String url = String.format("%s/%s.png", address, id);
+        httpClient.get(url, null, new FileAsyncHttpResponseHandler(file) {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
+                cb.onFailure(new HttpResponseException(statusCode, Resources.getSystem().getString(R.string.image_fail)));
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, File response) {
+                 cb.onSuccess(file);
+            }
+        });
     }
 
     private static <T> void makeArrayCall(String url, RequestParams params, final Type typeOfT, final RequestCompleteCallback<List<T>> cb) {

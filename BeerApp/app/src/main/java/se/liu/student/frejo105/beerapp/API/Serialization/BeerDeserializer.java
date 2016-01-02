@@ -27,7 +27,7 @@ public class BeerDeserializer implements JsonDeserializer<Beer> {
         beer.desc = jsonObject.get("desc").getAsString();
         beer.name = jsonObject.get("name").getAsString();
         Gson gson = new Gson();
-        beer.beerType = gson.fromJson(jsonObject.get("beerType"), BeerType.class);
+        beer.beerType = gson.fromJson(jsonObject.get("beertype"), BeerType.class);
         beer.brewery = gson.fromJson(jsonObject.get("brewery"), Brewery.class);
         return beer;
     }
