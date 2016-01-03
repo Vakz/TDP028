@@ -1,7 +1,6 @@
 package se.liu.student.frejo105.beerapp.Activities;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import se.liu.student.frejo105.beerapp.R;

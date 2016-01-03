@@ -53,7 +53,7 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         final DrawerLayout container = (DrawerLayout)getLayoutInflater().inflate(R.layout.activity_drawer_menu, null);
-        FrameLayout content = (FrameLayout)findViewById(R.id.contentframe);
+        FrameLayout content = (FrameLayout)container.findViewById(R.id.contentframe);
         getLayoutInflater().inflate(layoutResID, content, true);
         super.setContentView(container);
         setupToolbar(container);

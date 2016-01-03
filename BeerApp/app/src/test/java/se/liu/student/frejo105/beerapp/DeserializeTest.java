@@ -1,28 +1,20 @@
 package se.liu.student.frejo105.beerapp;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
-import static org.junit.Assert.*;
 
 import org.json.JSONException;
 import org.junit.Test;
 
 import se.liu.student.frejo105.beerapp.API.Serialization.RegisteredGson;
-import se.liu.student.frejo105.beerapp.Model.Pub;
-import se.liu.student.frejo105.beerapp.API.Serialization.LocationDeserializer;
 import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.Model.BeerType;
 import se.liu.student.frejo105.beerapp.Model.Brewery;
-import se.liu.student.frejo105.beerapp.API.Serialization.BeerDeserializer;
 import se.liu.student.frejo105.beerapp.Model.Location;
-import se.liu.student.frejo105.beerapp.API.Serialization.PubDeserializer;
+import se.liu.student.frejo105.beerapp.Model.Pub;
 
-/**
- * Created by vakz on 12/27/15.
- */
+import static org.junit.Assert.assertEquals;
+
 public class DeserializeTest {
 
     @Test
@@ -51,7 +43,7 @@ public class DeserializeTest {
         JsonParser jp = new JsonParser();
         String brewery = "{\"_id\": \"5679267f8e8f2a83128f5e27\", \"name\": \"Brewery\"}";
         String beertype = "{\"_id\": \"567926ddcf1fd0dd120efd5b\", \"typeName\": \"Lager\"}";
-        String beer = "{\"_id\": \"567929b63bf8eb42146e93d1\", \"name\": \"TestBeer\", \"desc\": \"TestDesc\", \"brewery\": %s, \"beerType\": %s}";
+        String beer = "{\"_id\": \"567929b63bf8eb42146e93d1\", \"name\": \"TestBeer\", \"desc\": \"TestDesc\", \"brewery\": %s, \"beertype\": %s}";
         String formatted = String.format(beer, brewery, beertype);
         JsonElement jsonObject = jp.parse(formatted).getAsJsonObject();
         Beer parsed = gson.fromJson(jsonObject, Beer.class);
@@ -93,7 +85,7 @@ public class DeserializeTest {
         String location = "{\"type\": \"Point\", \"coordinates\": [15.2, 17.234]}";
         String brewery = "{\"_id\": \"5679267f8e8f2a83128f5e27\", \"name\": \"Brewery\"}";
         String beertype = "{\"_id\": \"567926ddcf1fd0dd120efd5b\", \"typeName\": \"Lager\"}";
-        String serves = "[{\"_id\": \"567929b63bf8eb42146e93d1\", \"name\": \"TestBeer\", \"desc\": \"TestDesc\", \"brewery\": %s, \"beerType\": %s}]";
+        String serves = "[{\"_id\": \"567929b63bf8eb42146e93d1\", \"name\": \"TestBeer\", \"desc\": \"TestDesc\", \"brewery\": %s, \"beertype\": %s}]";
         String formatted = String.format(serves, brewery, beertype);
         String pub = "{\"_id\": \"567bcb3eb2b6563f11353b15\" ,\"name\": \"TestPub\", \"serves\": %s, \"loc\": %s}";
         formatted = String.format(pub, formatted, location);

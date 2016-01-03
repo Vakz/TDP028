@@ -28,7 +28,7 @@
         <activity
             android:name=".Activities.SearchActivity"
             android:label="@string/title_activity_search_beer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
