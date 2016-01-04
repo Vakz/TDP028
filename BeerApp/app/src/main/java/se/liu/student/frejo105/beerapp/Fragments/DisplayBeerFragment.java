@@ -1,5 +1,6 @@
 package se.liu.student.frejo105.beerapp.Fragments;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.lang.reflect.Field;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.HttpClient;
@@ -24,6 +27,7 @@ public class DisplayBeerFragment extends Fragment {
     public final static String ITEM_KEY = BeerDetailsFragment.ITEM_KEY;
 
     Beer beer;
+    BeerDetailsFragment bdf;
 
     View.OnClickListener retryHandler = new View.OnClickListener() {
         @Override
@@ -56,12 +60,17 @@ public class DisplayBeerFragment extends Fragment {
         HttpClient.getBeer(b.getString(ID_KEY), networkHandler);
     }
 
-    protected void displayBeer(Beer beer) {
+    public void displayBeer(Beer beer) {
         this.beer = beer;
-        BeerDetailsFragment bdf = new BeerDetailsFragment();
-        Bundle b = new Bundle();
-        b.putParcelable(BeerDetailsFragment.ITEM_KEY, beer);
-        bdf.setArguments(b);
+        if(bdf == null) {
+            bdf = new BeerDetailsFragment();
+            Bundle b = new Bundle();
+            b.putParcelable(BeerDetailsFragment.ITEM_KEY, beer);
+            bdf.setArguments(b);
+        }
+        else {
+            bdf.setBeerInfo(beer);
+        }
         FragmentTransaction t = getChildFragmentManager().beginTransaction();
         t.replace(R.id.detailed_item_placeholder, bdf);
         t.commit();
@@ -73,15 +82,12 @@ public class DisplayBeerFragment extends Fragment {
         View container_fragment = inflater.inflate(R.layout.fragment_display_beer, container, false);
         Bundle b = getArguments();
         if (savedInstanceState != null) {
-            displayBeer((Beer)savedInstanceState.getParcelable(ITEM_KEY));
-        }
-        else if(b.containsKey(ID_KEY)) {
+            displayBeer((Beer) savedInstanceState.getParcelable(ITEM_KEY));
+        } else if (b.containsKey(ID_KEY)) {
             getBeerByNetwork();
-        }
-        else if (b.containsKey(ITEM_KEY)) {
-            displayBeer((Beer)b.getParcelable(ITEM_KEY));
-        }
-        else {
+        } else if (b.containsKey(ITEM_KEY)) {
+            displayBeer((Beer) b.getParcelable(ITEM_KEY));
+        } else {
             Snackbar errorBar = Snackbar.make(getView(), "Attempting to show item, but no item provided", Snackbar.LENGTH_LONG);
             errorBar.setAction(R.string.retry, retryHandler);
             errorBar.setActionTextColor(Color.RED);
@@ -95,5 +101,21 @@ public class DisplayBeerFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(ITEM_KEY, beer);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

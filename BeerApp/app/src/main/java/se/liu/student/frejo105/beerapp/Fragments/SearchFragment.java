@@ -30,6 +30,7 @@ import se.liu.student.frejo105.beerapp.R;
 public class SearchFragment extends Fragment {
 
     public static final String QUERY_KEY = "QUERY";
+    List<Beer> results;
 
     public SearchFragment() {
     }
@@ -42,15 +43,12 @@ public class SearchFragment extends Fragment {
     };
 
     protected void doSearch(final View w) {
-        final Context _this = getContext();
         String query = getArguments().getString(QUERY_KEY);
         HttpClient.search(query, new RequestCompleteCallback<List<Beer>>() {
             @Override
             public void onSuccess(List<Beer> result) {
-                SearchResultAdapter adapter = new SearchResultAdapter(_this, result);
-                ListView lw = ((ListView)w.findViewById(R.id.search_results));
-                lw.setAdapter(adapter);
-                lw.setOnItemClickListener(itemSelect);
+                results = result;
+                postResults(results, w);
             }
 
             @Override
@@ -60,11 +58,23 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    private void postResults(List<Beer> results, final View w) {
+        SearchResultAdapter items = new SearchResultAdapter(getContext(), results);
+        ListView lw = ((ListView)w.findViewById(R.id.search_results));
+        lw.setAdapter(items);
+        lw.setOnItemClickListener(itemSelect);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View w = inflater.inflate(R.layout.fragment_search, container, false);
-        doSearch(w);
+        if (results != null) {
+            postResults(results, w);
+        }
+        else {
+            doSearch(w);
+        }
         return w;
     }
 
@@ -81,4 +91,6 @@ public class SearchFragment extends Fragment {
         errorBar.setActionTextColor(Color.RED);
         errorBar.show();
     }
+
+
 }

@@ -46,6 +46,10 @@ public class BeerDetailsFragment extends Fragment {
         return detailsFragmentView;
     }
 
+    public void setBeerInfo(Beer beer) {
+        insertBeerInfo(getView(), beer);
+    }
+
     private void insertBeerInfo(final View view, Beer beer) {
         if (beer == null) return;
         this.beer = beer;

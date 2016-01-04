@@ -28,7 +28,8 @@
         <activity
             android:name=".Activities.SearchActivity"
             android:label="@string/title_activity_search_beer"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
