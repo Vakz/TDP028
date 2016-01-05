@@ -31,6 +31,17 @@ public class Location implements Parcelable {
         }
     };
 
+    public android.location.Location toAndroidLocation() {
+        android.location.Location loc = new android.location.Location("");
+        loc.setLongitude(longitude);
+        loc.setLongitude(latitude);
+        return loc;
+    }
+
+    public double distanceTo(Location dest) {
+        return toAndroidLocation().distanceTo(dest.toAndroidLocation());
+    }
+
     @Override
     public int describeContents() {
         return 0;

@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.HttpClient;
 import se.liu.student.frejo105.beerapp.API.RequestCompleteCallback;
 import se.liu.student.frejo105.beerapp.Model.Beer;
+import se.liu.student.frejo105.beerapp.Model.Pub;
 import se.liu.student.frejo105.beerapp.R;
 
 /**
@@ -60,6 +62,16 @@ public class DisplayBeerFragment extends Fragment {
         HttpClient.getBeer(b.getString(ID_KEY), networkHandler);
     }
 
+    protected void displayMiscInfo() {
+        PubListFragment plf = new PubListFragment();
+        Bundle b = new Bundle();
+        b.putParcelableArrayList(PubListFragment.PUB_LIST_KEY, new ArrayList<Pub>());
+        plf.setArguments(b);
+        FragmentTransaction t = getChildFragmentManager().beginTransaction();
+        t.replace(R.id.misc_item_info_placeholder, plf);
+        t.commit();
+    }
+
     public void displayBeer(Beer beer) {
         this.beer = beer;
         if(bdf == null) {
@@ -74,6 +86,7 @@ public class DisplayBeerFragment extends Fragment {
         FragmentTransaction t = getChildFragmentManager().beginTransaction();
         t.replace(R.id.detailed_item_placeholder, bdf);
         t.commit();
+        displayMiscInfo();
     }
 
     @Override

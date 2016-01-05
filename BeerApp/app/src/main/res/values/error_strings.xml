@@ -3,4 +3,5 @@
     <string name="empty_searchword">Searchword cannot be empty</string>
     <string name="invalid_id">ID is invalid</string>
     <string name="image_fail">Unable to retrieve image</string>
+    <string name="location_fail">Unable to retrieve current location</string>
 </resources>
