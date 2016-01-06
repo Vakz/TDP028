@@ -35,7 +35,7 @@ public class HttpClient {
         makeCall(getCompleteUrl("Beer"), params, Beer.class, cb);
     }
 
-    public static void search(String searchword, final RequestCompleteCallback<List<Beer>> cb) {
+    public static void search(String searchword, final RequestCompleteCallback<ArrayList<Beer>> cb) {
         if (Utility.isNullEmptyOrWhitespace(searchword))
         {
             cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
@@ -45,7 +45,7 @@ public class HttpClient {
         makeArrayCall(getCompleteUrl("Search"), params, Beer.class, cb);
     }
 
-    public static void suggestion(Location coordinates, int distance, SuggestionFilters filter, final RequestCompleteCallback<List<Pub>> cb) {
+    public static void suggestion(Location coordinates, int distance, SuggestionFilters filter, final RequestCompleteCallback<ArrayList<Pub>> cb) {
         RequestParams params = new RequestParams();
         params.put("lng", coordinates.longitude);
         params.put("lat", coordinates.latitude);
@@ -63,7 +63,7 @@ public class HttpClient {
     }
 
 
-    public static void getMenu(String id, final RequestCompleteCallback<List<Beer>> cb) {
+    public static void getMenu(String id, final RequestCompleteCallback<ArrayList<Beer>> cb) {
         if (Utility.isNullEmptyOrWhitespace(id))
         {
             cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.invalid_id)));
@@ -84,7 +84,7 @@ public class HttpClient {
         makeCall(getCompleteUrl("Pub"), params, Pub.class, cb);
     }
 
-    public static void getNearbyPubs(Location loc, int distance, final RequestCompleteCallback<List<Pub>> cb) {
+    public static void getNearbyPubs(Location loc, int distance, final RequestCompleteCallback<ArrayList<Pub>> cb) {
         RequestParams params = new RequestParams();
         params.put("lng", loc.longitude);
         params.put("lat", loc.latitude);
@@ -92,7 +92,7 @@ public class HttpClient {
         makeArrayCall(getCompleteUrl("Pubs"), params, Pub.class, cb);
     }
 
-    public static void getPubsServing(Location loc, String id, int distance, final RequestCompleteCallback<List<Pub>> cb) {
+    public static void getPubsServing(Location loc, String id, int distance, final RequestCompleteCallback<ArrayList<Pub>> cb) {
         if (Utility.isNullEmptyOrWhitespace(id))
         {
             cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.invalid_id)));
@@ -127,7 +127,7 @@ public class HttpClient {
         });
     }
 
-    private static <T> void makeArrayCall(String url, RequestParams params, final Type typeOfT, final RequestCompleteCallback<List<T>> cb) {
+    private static <T> void makeArrayCall(String url, RequestParams params, final Type typeOfT, final RequestCompleteCallback<ArrayList<T>> cb) {
         httpClient.get(url, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

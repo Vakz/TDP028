@@ -12,6 +12,7 @@ import java.util.List;
 import se.liu.student.frejo105.beerapp.Model.Location;
 import se.liu.student.frejo105.beerapp.Model.Pub;
 import se.liu.student.frejo105.beerapp.R;
+import se.liu.student.frejo105.beerapp.Utility.Utility;
 
 /**
  * Created by vakz on 2016-01-04.
@@ -35,7 +36,7 @@ public class PubSearchAdapter extends ArrayAdapter<Pub> {
 
         ((TextView)convertView.findViewById(R.id.pub_list_name)).setText(pub.name);
         double distance = location.distanceTo(pub.loc);
-        ((TextView)convertView.findViewById(R.id.pub_list_distance)).setText(String.valueOf(distance));
+        ((TextView)convertView.findViewById(R.id.pub_list_distance)).setText(Utility.formatDistanceString(distance));
 
         return convertView;
     }

@@ -31,7 +31,7 @@ public class Utility {
         final GoogleApiClient client = new GoogleApiClient
                 .Builder(context)
                 .addApi(LocationServices.API)
-                .build();;
+                .build();
 
         GoogleApiClient.ConnectionCallbacks callback = new GoogleApiClient.ConnectionCallbacks() {
             @Override
@@ -68,5 +68,21 @@ public class Utility {
         client.registerConnectionCallbacks(callback);
         client.registerConnectionFailedListener(failedCb);
         client.connect();
+    }
+
+    /**
+     * Formats a distance to a convenient format. If the distance is longer than 1000,
+     * the returned distance will be in kilometers.
+     * @param distance The distance to format
+     * @return A string, rounded and in a proper unit
+     */
+    public static String formatDistanceString(double distance) {
+        String unit = " m";
+        distance = Math.round(distance);
+        if (distance > 1000) {
+            distance = Math.round(distance / 100) / 10;
+            unit = " km";
+        }
+        return String.valueOf(distance) + unit;
     }
 }

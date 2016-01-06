@@ -17,8 +17,10 @@ import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.HttpClient;
 import se.liu.student.frejo105.beerapp.API.RequestCompleteCallback;
 import se.liu.student.frejo105.beerapp.Model.Beer;
+import se.liu.student.frejo105.beerapp.Model.Location;
 import se.liu.student.frejo105.beerapp.Model.Pub;
 import se.liu.student.frejo105.beerapp.R;
+import se.liu.student.frejo105.beerapp.Utility.Utility;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -31,12 +33,7 @@ public class DisplayBeerFragment extends Fragment {
     Beer beer;
     BeerDetailsFragment bdf;
 
-    View.OnClickListener retryHandler = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            getBeerByNetwork();
-        }
-    };
+
 
     RequestCompleteCallback<Beer> networkHandler = new RequestCompleteCallback<Beer>() {
         @Override
@@ -56,20 +53,66 @@ public class DisplayBeerFragment extends Fragment {
     public DisplayBeerFragment() {
     }
 
+    private void showError(String message, final View.OnClickListener cb) {
+        Snackbar errorBar = Snackbar.make(getView(), message, Snackbar.LENGTH_LONG);
+        errorBar.setAction("Retry", cb);
+        errorBar.setActionTextColor(Color.RED);
+        errorBar.show();
+    }
+
 
     protected void getBeerByNetwork() {
         Bundle b = getArguments();
         HttpClient.getBeer(b.getString(ID_KEY), networkHandler);
     }
 
+    View.OnClickListener retryHandler = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            getBeerByNetwork();
+        }
+    };
+
     protected void displayMiscInfo() {
-        PubListFragment plf = new PubListFragment();
-        Bundle b = new Bundle();
-        b.putParcelableArrayList(PubListFragment.PUB_LIST_KEY, new ArrayList<Pub>());
-        plf.setArguments(b);
-        FragmentTransaction t = getChildFragmentManager().beginTransaction();
-        t.replace(R.id.misc_item_info_placeholder, plf);
-        t.commit();
+
+        final View.OnClickListener retry = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayMiscInfo();
+            }
+        };
+
+        final RequestCompleteCallback<ArrayList<Pub>> getPubsCallback = new RequestCompleteCallback<ArrayList<Pub>>() {
+            @Override
+            public void onSuccess(ArrayList<Pub> result) {
+                PubListFragment plf = new PubListFragment();
+                Bundle b = new Bundle();
+                b.putParcelableArrayList(PubListFragment.PUB_LIST_KEY, result);
+                plf.setArguments(b);
+                FragmentTransaction t = getChildFragmentManager().beginTransaction();
+                t.replace(R.id.misc_item_info_placeholder, plf);
+                t.commit();
+            }
+
+            @Override
+            public void onFailure(HttpResponseException hre) {
+                showError(getString(R.string.get_pubs_fail), retry);
+            }
+        };
+
+        RequestCompleteCallback<Location> locationHandler = new RequestCompleteCallback<Location>() {
+            @Override
+            public void onSuccess(Location result) {
+                HttpClient.getPubsServing(result, beer._id, 1000000000, getPubsCallback);
+            }
+
+            @Override
+            public void onFailure(HttpResponseException hre) {
+                showError(getString(R.string.location_fail), retry);
+            }
+        };
+
+        Utility.getCurrentLocation(getContext(), locationHandler);
     }
 
     public void displayBeer(Beer beer) {

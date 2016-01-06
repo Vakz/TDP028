@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
@@ -52,14 +54,21 @@ public class PubListFragment extends Fragment {
 
         Utility.getCurrentLocation(getContext(), new RequestCompleteCallback<Location>() {
             @Override
-            public void onSuccess(Location result) {
-                ((TextView)w.findViewById(R.id.super_simple_text)).setText(String.valueOf(result.longitude));
-                /*
+            public void onSuccess(final Location result) {
+                Collections.sort(pubs, new Comparator<Pub>() {
+                    @Override
+                    public int compare(Pub lhs, Pub rhs) {
+                        double lhsDistance = lhs.loc.distanceTo(result);
+                        double rhsDistance = rhs.loc.distanceTo(result);
+                        if (lhsDistance < rhsDistance) return -1;
+                        return lhsDistance > rhsDistance ? 1 : 0;
+                    }
+                });
                 PubSearchAdapter adapter = new PubSearchAdapter(getContext(), pubs, result);
                 ListView list = (ListView)w.findViewById(R.id.pub_list);
                 list.setAdapter(adapter);
                 list.setOnItemClickListener(itemSelect);
-                */
+
             }
 
             @Override

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
@@ -44,9 +45,9 @@ public class SearchFragment extends Fragment {
 
     protected void doSearch(final View w) {
         String query = getArguments().getString(QUERY_KEY);
-        HttpClient.search(query, new RequestCompleteCallback<List<Beer>>() {
+        HttpClient.search(query, new RequestCompleteCallback<ArrayList<Beer>>() {
             @Override
-            public void onSuccess(List<Beer> result) {
+            public void onSuccess(ArrayList<Beer> result) {
                 results = result;
                 postResults(results, w);
             }
