@@ -60,7 +60,8 @@ public class BeerDetailsFragment extends Fragment {
         ImageHandler.getImage(getContext(), beer._id, new RequestCompleteCallback<Bitmap>() {
             @Override
             public void onSuccess(Bitmap result) {
-                ((ImageView)view.findViewById(R.id.item_image)).setImageBitmap(result);
+                ImageView imageView = ((ImageView)view.findViewById(R.id.item_image));
+                imageView.setImageBitmap(result);
             }
 
             @Override

@@ -20,6 +20,8 @@ import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.Model.Location;
 import se.liu.student.frejo105.beerapp.Model.Pub;
 import se.liu.student.frejo105.beerapp.R;
+import se.liu.student.frejo105.beerapp.Utility.BasicCallback;
+import se.liu.student.frejo105.beerapp.Utility.LocationProvider;
 import se.liu.student.frejo105.beerapp.Utility.Utility;
 
 /**
@@ -32,7 +34,7 @@ public class DisplayBeerFragment extends Fragment {
 
     Beer beer;
     BeerDetailsFragment bdf;
-
+    LocationProvider locationProvider;
 
 
     RequestCompleteCallback<Beer> networkHandler = new RequestCompleteCallback<Beer>() {
@@ -51,6 +53,7 @@ public class DisplayBeerFragment extends Fragment {
     };
 
     public DisplayBeerFragment() {
+
     }
 
     private void showError(String message, final View.OnClickListener cb) {
@@ -100,7 +103,7 @@ public class DisplayBeerFragment extends Fragment {
             }
         };
 
-        RequestCompleteCallback<Location> locationHandler = new RequestCompleteCallback<Location>() {
+        final RequestCompleteCallback<Location> locationHandler = new RequestCompleteCallback<Location>() {
             @Override
             public void onSuccess(Location result) {
                 HttpClient.getPubsServing(result, beer._id, 1000000000, getPubsCallback);
@@ -111,8 +114,21 @@ public class DisplayBeerFragment extends Fragment {
                 showError(getString(R.string.location_fail), retry);
             }
         };
+        if (locationProvider == null) locationProvider = new LocationProvider(getContext(), new BasicCallback() {
+            @Override
+            public void onSuccess() {
+                    locationProvider.getCurrentLocation(locationHandler);
 
-        Utility.getCurrentLocation(getContext(), locationHandler);
+            }
+
+            @Override
+            public void onFailure(Exception error) {
+                showError(error.getMessage(), retry);
+            }
+        });
+        else {
+            locationProvider.getCurrentLocation(locationHandler);
+        }
     }
 
     public void displayBeer(Beer beer) {
@@ -144,10 +160,7 @@ public class DisplayBeerFragment extends Fragment {
         } else if (b.containsKey(ITEM_KEY)) {
             displayBeer((Beer) b.getParcelable(ITEM_KEY));
         } else {
-            Snackbar errorBar = Snackbar.make(getView(), "Attempting to show item, but no item provided", Snackbar.LENGTH_LONG);
-            errorBar.setAction(R.string.retry, retryHandler);
-            errorBar.setActionTextColor(Color.RED);
-            errorBar.show();
+            showError(getString(R.string.no_item_error), retryHandler);
         }
 
         return container_fragment;

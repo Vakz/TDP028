@@ -21,9 +21,9 @@ import se.liu.student.frejo105.beerapp.Utility.ImageHandler;
 /**
  * Created by vakz on 2016-01-02.
  */
-public class SearchResultAdapter extends ArrayAdapter<Beer> {
+public class BeerResultAdapter extends ArrayAdapter<Beer> {
 
-    public SearchResultAdapter(Context context, List<Beer> results) {
+    public BeerResultAdapter(Context context, List<Beer> results) {
         super(context, 0, results);
     }
 

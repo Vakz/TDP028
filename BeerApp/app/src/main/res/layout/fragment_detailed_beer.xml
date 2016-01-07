@@ -7,6 +7,8 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true">
     <ImageView
+        android:maxHeight="200dp"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/thumbnail"
         android:id="@+id/item_image"
         android:layout_height="wrap_content"

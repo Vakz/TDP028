@@ -5,4 +5,5 @@
     <string name="image_fail">Unable to retrieve image</string>
     <string name="location_fail">Unable to retrieve current location</string>
     <string name="get_pubs_fail">Unable to retrieve pubs</string>
+    <string name="no_item_error">Attempting to show item, but no item provided</string>
 </resources>

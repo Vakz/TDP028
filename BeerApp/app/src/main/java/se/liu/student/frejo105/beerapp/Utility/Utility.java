@@ -27,48 +27,7 @@ public class Utility {
         return str == null || str.trim().isEmpty();
     }
 
-    public static void getCurrentLocation(Context context, final RequestCompleteCallback<Location> cb) {
-        final GoogleApiClient client = new GoogleApiClient
-                .Builder(context)
-                .addApi(LocationServices.API)
-                .build();
 
-        GoogleApiClient.ConnectionCallbacks callback = new GoogleApiClient.ConnectionCallbacks() {
-            @Override
-            public void onConnected(@Nullable Bundle bundle) {
-                android.location.Location lastKnown = LocationServices.FusedLocationApi.getLastLocation(client);
-                if (lastKnown !=  null) {
-                    Location loc = new Location();
-                    loc.longitude = lastKnown.getLongitude();
-                    loc.latitude = lastKnown.getLatitude();
-                    cb.onSuccess(loc);
-
-                }
-                else {
-                    cb.onFailure(new HttpResponseException(400, "Unable to retrieve location"));
-                }
-                client.disconnect();
-            }
-
-            @Override
-            public void onConnectionSuspended(int i) {
-                // Not an issue
-            }
-        };
-
-        GoogleApiClient.OnConnectionFailedListener failedCb = new GoogleApiClient.OnConnectionFailedListener() {
-            @Override
-            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                cb.onFailure(new HttpResponseException(400, connectionResult.getErrorMessage()));
-                client.disconnect();
-            }
-        };
-
-
-        client.registerConnectionCallbacks(callback);
-        client.registerConnectionFailedListener(failedCb);
-        client.connect();
-    }
 
     /**
      * Formats a distance to a convenient format. If the distance is longer than 1000,

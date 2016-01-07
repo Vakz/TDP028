@@ -1,13 +1,9 @@
 package se.liu.student.frejo105.beerapp.Fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +17,7 @@ import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.HttpClient;
 import se.liu.student.frejo105.beerapp.API.RequestCompleteCallback;
 import se.liu.student.frejo105.beerapp.Activities.SearchActivity;
-import se.liu.student.frejo105.beerapp.Adapters.SearchResultAdapter;
+import se.liu.student.frejo105.beerapp.Adapters.BeerResultAdapter;
 import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.R;
 
@@ -60,7 +56,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void postResults(List<Beer> results, final View w) {
-        SearchResultAdapter items = new SearchResultAdapter(getContext(), results);
+        BeerResultAdapter items = new BeerResultAdapter(getContext(), results);
         ListView lw = ((ListView)w.findViewById(R.id.search_results));
         lw.setAdapter(items);
         lw.setOnItemClickListener(itemSelect);
