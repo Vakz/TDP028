@@ -53,4 +53,9 @@ public class Location implements Parcelable {
         dest.writeDouble(longitude);
         dest.writeDouble(latitude);
     }
+
+    @Override
+    public String toString() {
+        return "Latitude: " + String.valueOf(latitude) + ", Longitude: " + String.valueOf(longitude);
+    }
 }

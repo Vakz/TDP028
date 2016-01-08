@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,9 +22,7 @@ import se.liu.student.frejo105.beerapp.Adapters.PubSearchAdapter;
 import se.liu.student.frejo105.beerapp.Model.Location;
 import se.liu.student.frejo105.beerapp.Model.Pub;
 import se.liu.student.frejo105.beerapp.R;
-import se.liu.student.frejo105.beerapp.Utility.BasicCallback;
 import se.liu.student.frejo105.beerapp.Utility.LocationProvider;
-import se.liu.student.frejo105.beerapp.Utility.Utility;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +61,8 @@ public class PubListFragment extends Fragment {
         final RequestCompleteCallback<Location> locationHandler = new RequestCompleteCallback<Location>() {
             @Override
             public void onSuccess(final Location result) {
+                locationProvider.removeListener(this);
+                System.out.println("RECIEVED THIS: " + result.toString());
                 Collections.sort(pubs, new Comparator<Pub>() {
                     @Override
                     public int compare(Pub lhs, Pub rhs) {
@@ -73,6 +72,7 @@ public class PubListFragment extends Fragment {
                         return lhsDistance > rhsDistance ? 1 : 0;
                     }
                 });
+                if (getContext() == null) return;
                 PubSearchAdapter adapter = new PubSearchAdapter(getContext(), pubs, result);
                 ListView list = (ListView) w.findViewById(R.id.pub_list);
                 list.setAdapter(adapter);
@@ -81,26 +81,14 @@ public class PubListFragment extends Fragment {
 
             @Override
             public void onFailure(HttpResponseException hre) {
+                locationProvider.removeListener(this);
                 showError(getString(R.string.location_fail), retry);
             }
         };
 
 
-        if (locationProvider == null) locationProvider = new LocationProvider(getContext(), new BasicCallback() {
-            @Override
-            public void onSuccess() {
-                locationProvider.getCurrentLocation(locationHandler);
-            }
-
-            @Override
-            public void onFailure(Exception error) {
-                showError(getString(R.string.location_fail), retry);
-            }
-        });
-        else {
-            locationProvider.getCurrentLocation(locationHandler);
-        }
-
+        if (locationProvider == null) locationProvider = new LocationProvider(getContext());
+            locationProvider.addListener(locationHandler);
     }
 
     @Override

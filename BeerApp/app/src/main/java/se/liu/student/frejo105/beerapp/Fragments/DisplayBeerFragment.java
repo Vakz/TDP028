@@ -1,6 +1,5 @@
 package se.liu.student.frejo105.beerapp.Fragments;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -20,9 +19,7 @@ import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.Model.Location;
 import se.liu.student.frejo105.beerapp.Model.Pub;
 import se.liu.student.frejo105.beerapp.R;
-import se.liu.student.frejo105.beerapp.Utility.BasicCallback;
 import se.liu.student.frejo105.beerapp.Utility.LocationProvider;
-import se.liu.student.frejo105.beerapp.Utility.Utility;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -88,6 +85,8 @@ public class DisplayBeerFragment extends Fragment {
         final RequestCompleteCallback<ArrayList<Pub>> getPubsCallback = new RequestCompleteCallback<ArrayList<Pub>>() {
             @Override
             public void onSuccess(ArrayList<Pub> result) {
+                // Check if user moved on before a result was returned
+                if (getContext() == null) return;
                 PubListFragment plf = new PubListFragment();
                 Bundle b = new Bundle();
                 b.putParcelableArrayList(PubListFragment.PUB_LIST_KEY, result);
@@ -106,29 +105,20 @@ public class DisplayBeerFragment extends Fragment {
         final RequestCompleteCallback<Location> locationHandler = new RequestCompleteCallback<Location>() {
             @Override
             public void onSuccess(Location result) {
-                HttpClient.getPubsServing(result, beer._id, 1000000000, getPubsCallback);
+
+                HttpClient.getPubsServing(result, beer._id, 10000000, getPubsCallback);
+                locationProvider.removeListener(this);
             }
 
             @Override
             public void onFailure(HttpResponseException hre) {
                 showError(getString(R.string.location_fail), retry);
+                locationProvider.removeListener(this);
             }
         };
-        if (locationProvider == null) locationProvider = new LocationProvider(getContext(), new BasicCallback() {
-            @Override
-            public void onSuccess() {
-                    locationProvider.getCurrentLocation(locationHandler);
+        if (locationProvider == null) locationProvider = new LocationProvider(getContext());
+        locationProvider.addListener(locationHandler);
 
-            }
-
-            @Override
-            public void onFailure(Exception error) {
-                showError(error.getMessage(), retry);
-            }
-        });
-        else {
-            locationProvider.getCurrentLocation(locationHandler);
-        }
     }
 
     public void displayBeer(Beer beer) {
