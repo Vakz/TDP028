@@ -1,6 +1,7 @@
 package se.liu.student.frejo105.beerapp.Fragments;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.RequestCompleteCallback;
+import se.liu.student.frejo105.beerapp.Activities.PubDisplayActivity;
 import se.liu.student.frejo105.beerapp.Adapters.PubSearchAdapter;
 import se.liu.student.frejo105.beerapp.Model.Location;
 import se.liu.student.frejo105.beerapp.Model.Pub;
@@ -40,7 +42,10 @@ public class PubListFragment extends Fragment {
     ListView.OnItemClickListener itemSelect = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            Pub pub = (Pub)parent.getAdapter().getItem(position);
+            Intent intent = new Intent(getActivity(), PubDisplayActivity.class);
+            intent.putExtra(PubDisplayActivity.PUB_KEY, pub);
+            startActivity(intent);
         }
     };
 
@@ -62,7 +67,6 @@ public class PubListFragment extends Fragment {
             @Override
             public void onSuccess(final Location result) {
                 locationProvider.removeListener(this);
-                System.out.println("RECIEVED THIS: " + result.toString());
                 Collections.sort(pubs, new Comparator<Pub>() {
                     @Override
                     public int compare(Pub lhs, Pub rhs) {

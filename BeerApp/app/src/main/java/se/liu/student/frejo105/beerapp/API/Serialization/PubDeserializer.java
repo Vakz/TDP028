@@ -28,6 +28,8 @@ public class PubDeserializer implements JsonDeserializer<Pub> {
         JsonObject jsonObject = json.getAsJsonObject();
         pub._id = jsonObject.get("_id").getAsString();
         pub.name = jsonObject.get("name").getAsString();
+        pub.desc = jsonObject.get("desc").getAsString();
+        System.out.println("DESCRIPTION:" + pub.desc);
         pub.loc = gson.fromJson(jsonObject.get("loc"), Location.class);
         JsonArray jsonServes = jsonObject.get("serves").getAsJsonArray();
         pub.serves = new ArrayList<>();

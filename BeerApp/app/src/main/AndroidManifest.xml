@@ -29,13 +29,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.SearchActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_search_beer"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB97FulMPfagDPYYoisypUr_YVCetuAW2U"
-             />
+            android:value="AIzaSyB97FulMPfagDPYYoisypUr_YVCetuAW2U" />
+
+        <activity
+            android:name=".Activities.PubDisplayActivity"
+            android:label="@string/title_activity_pub_display"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

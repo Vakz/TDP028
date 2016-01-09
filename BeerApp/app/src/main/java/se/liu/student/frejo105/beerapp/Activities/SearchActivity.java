@@ -9,7 +9,7 @@ import se.liu.student.frejo105.beerapp.Fragments.SearchFragment;
 import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.R;
 
-public class SearchActivity extends DrawerMenuActivity {
+public class SearchActivity extends DrawerMenuActivity  implements BeerDisplayActivity {
 
     public static final String QUERY_KEY = SearchFragment.QUERY_KEY;
     private static final String CURRENT_DETAILS_KEY = "DETAILS";

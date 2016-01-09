@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Pub implements Parcelable {
     public String name;
     public String _id;
+    public String desc;
     public Location loc;
     public ArrayList<Beer> serves;
 
@@ -21,6 +22,7 @@ public class Pub implements Parcelable {
         _id = in.readString();
         loc = in.readParcelable(Location.class.getClassLoader());
         serves = in.createTypedArrayList(Beer.CREATOR);
+        desc = in.readString();
     }
 
     public static final Creator<Pub> CREATOR = new Creator<Pub>() {
@@ -46,5 +48,6 @@ public class Pub implements Parcelable {
         dest.writeString(_id);
         dest.writeParcelable(loc, flags);
         dest.writeTypedList(serves);
+        dest.writeString(desc);
     }
 }

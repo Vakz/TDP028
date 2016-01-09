@@ -77,7 +77,6 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks, Go
 
     @Override
     public void onLocationChanged(android.location.Location location) {
-        System.out.println(location.toString());
         lastKnown = location;
         notifyListeners();
     }

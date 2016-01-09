@@ -68,11 +68,12 @@ public class DeserializeTest {
         RegisteredGson gson = RegisteredGson.getInstance();
         JsonParser jp = new JsonParser();
         String location = "{\"type\": \"Point\", \"coordinates\": [15.2, 17.234]}";
-        String pub = "{\"_id\": \"567bcb3eb2b6563f11353b15\" ,\"name\": \"TestPub\", \"serves\": [\"567929b63bf8eb42146e93d1\"], \"loc\": %s}";
+        String pub = "{\"_id\": \"567bcb3eb2b6563f11353b15\" ,\"name\": \"TestPub\", \"desc\": \"TestDesc\", \"serves\": [\"567929b63bf8eb42146e93d1\"], \"loc\": %s}";
         String formatted = String.format(pub, location);
         JsonElement jsonObject = jp.parse(formatted).getAsJsonObject();
         Pub p = gson.fromJson(jsonObject, Pub.class);
         assertEquals("TestPub", p.name);
+        assertEquals("TestDesc", p.desc);
         assertEquals("567929b63bf8eb42146e93d1", p.serves.get(0)._id);
         assertEquals(15.2, p.loc.longitude, 0.00001);
         assertEquals(17.234, p.loc.latitude, 0.00001);
@@ -87,7 +88,7 @@ public class DeserializeTest {
         String beertype = "{\"_id\": \"567926ddcf1fd0dd120efd5b\", \"typeName\": \"Lager\"}";
         String serves = "[{\"_id\": \"567929b63bf8eb42146e93d1\", \"name\": \"TestBeer\", \"desc\": \"TestDesc\", \"brewery\": %s, \"beertype\": %s}]";
         String formatted = String.format(serves, brewery, beertype);
-        String pub = "{\"_id\": \"567bcb3eb2b6563f11353b15\" ,\"name\": \"TestPub\", \"serves\": %s, \"loc\": %s}";
+        String pub = "{\"_id\": \"567bcb3eb2b6563f11353b15\" ,\"name\": \"TestPub\", \"desc\": \"TestDesc\", \"serves\": %s, \"loc\": %s}";
         formatted = String.format(pub, formatted, location);
         JsonElement jsonObject = jp.parse(formatted).getAsJsonObject();
         Pub p = gson.fromJson(jsonObject, Pub.class);

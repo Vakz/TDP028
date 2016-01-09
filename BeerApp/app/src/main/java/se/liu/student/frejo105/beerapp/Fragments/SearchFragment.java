@@ -16,6 +16,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.HttpClient;
 import se.liu.student.frejo105.beerapp.API.RequestCompleteCallback;
+import se.liu.student.frejo105.beerapp.Activities.BeerDisplayActivity;
 import se.liu.student.frejo105.beerapp.Activities.SearchActivity;
 import se.liu.student.frejo105.beerapp.Adapters.BeerResultAdapter;
 import se.liu.student.frejo105.beerapp.Model.Beer;
@@ -35,7 +36,7 @@ public class SearchFragment extends Fragment {
     ListView.OnItemClickListener itemSelect = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ((SearchActivity)getActivity()).showItemDetailsFragment((Beer)parent.getAdapter().getItem(position));
+            ((BeerDisplayActivity)getActivity()).showItemDetailsFragment((Beer)parent.getAdapter().getItem(position));
         }
     };
 

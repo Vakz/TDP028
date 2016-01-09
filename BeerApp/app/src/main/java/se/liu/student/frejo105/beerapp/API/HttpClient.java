@@ -63,14 +63,14 @@ public class HttpClient {
     }
 
 
-    public static void getMenu(String id, final RequestCompleteCallback<ArrayList<Beer>> cb) {
+    public static void getMenu(String id, final RequestCompleteCallback<Pub> cb) {
         if (Utility.isNullEmptyOrWhitespace(id))
         {
             cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.invalid_id)));
             return;
         }
         RequestParams params = new RequestParams("id", id);
-        makeArrayCall(getCompleteUrl("Menu"), params, Beer.class, cb);
+        makeCall(getCompleteUrl("Menu"), params, Pub.class, cb);
     }
 
     public static void getPub(String id, boolean incMenu, final RequestCompleteCallback<Pub> cb) {
@@ -151,7 +151,7 @@ public class HttpClient {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                cb.onSuccess((T)RegisteredGson.getInstance().fromJsonArray(responseString, typeOfT));
+                cb.onSuccess((T)RegisteredGson.getInstance().fromJson (responseString, typeOfT));
             }
         });
     }
