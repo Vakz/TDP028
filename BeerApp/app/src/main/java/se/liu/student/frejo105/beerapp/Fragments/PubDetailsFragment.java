@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.HttpClient;
 import se.liu.student.frejo105.beerapp.API.RequestCompleteCallback;
+import se.liu.student.frejo105.beerapp.Activities.BeerDisplayActivity;
 import se.liu.student.frejo105.beerapp.Adapters.BeerResultAdapter;
 import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.Model.Pub;
@@ -82,17 +83,20 @@ public class PubDetailsFragment extends Fragment {
         else {
             HttpClient.getMenu(pub._id, menuRequestHandler);
         }
-        ((ListView)getView().findViewById(R.id.pub_details_menu)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            }
-        });
     }
 
     private void setMenu(ArrayList<Beer> menu) {
         BeerResultAdapter menuAdapter = new BeerResultAdapter(getContext(), menu);
-        ((ListView)getView().findViewById(R.id.pub_details_menu)).setAdapter(menuAdapter);
+        ListView menuView = (ListView)getView().findViewById(R.id.pub_details_menu);
+        menuView.setAdapter(menuAdapter);
+        menuView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BeerDisplayActivity activity = (BeerDisplayActivity)getActivity();
+                activity.showItemDetailsFragment((Beer)parent.getAdapter().getItem(position));
+            }
+        });
     }
 
 }

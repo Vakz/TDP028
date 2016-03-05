@@ -10,7 +10,10 @@
     <string name="thumbnail">Thumbnail</string>
     <string name="title_activity_detailed_beer">DetailedBeerActivity</string>
     <string name="title_activity_pub_display">PubDisplayActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_searchword">Searchword cannot be empty</string>
+    <string name="invalid_id">ID is invalid</string>
+    <string name="image_fail">Unable to retrieve image</string>
+    <string name="location_fail">Unable to retrieve current location</string>
+    <string name="get_pubs_fail">Unable to retrieve pubs</string>
+    <string name="no_item_error">Attempting to show item, but no item provided</string>
 </resources>

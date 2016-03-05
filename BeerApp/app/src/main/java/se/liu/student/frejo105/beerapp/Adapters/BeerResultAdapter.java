@@ -18,13 +18,13 @@ import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.R;
 import se.liu.student.frejo105.beerapp.Utility.ImageHandler;
 
-/**
- * Created by vakz on 2016-01-02.
- */
 public class BeerResultAdapter extends ArrayAdapter<Beer> {
+
+    List<Beer> results;
 
     public BeerResultAdapter(Context context, List<Beer> results) {
         super(context, 0, results);
+        this.results = results;
     }
 
     @Override
@@ -51,5 +51,12 @@ public class BeerResultAdapter extends ArrayAdapter<Beer> {
         });
 
         return convertView;
+    }
+
+    public void pushNewResultList(ArrayList<Beer> results) {
+        this.results.clear();
+        for (Beer b : results) {
+            this.results.add(b);
+        }
     }
 }

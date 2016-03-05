@@ -1,6 +1,7 @@
 package se.liu.student.frejo105.beerapp.Activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.widget.DrawerLayout;
@@ -47,7 +48,7 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
         b.putString(SearchActivity.QUERY_KEY, query);
         searchIntent.putExtra(SearchActivity.QUERY_KEY, query);
         startActivity(searchIntent);
-        finish();
+        //finish();
     }
 
     @Override
@@ -64,5 +65,9 @@ public abstract class DrawerMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggler = new ActionBarDrawerToggle(this, container, toolbar, R.string.drawer_toggle_open, R.string.drawer_toggle_close);
         container.setDrawerListener(toggler);
+    }
+
+    protected boolean inLandscape() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 }

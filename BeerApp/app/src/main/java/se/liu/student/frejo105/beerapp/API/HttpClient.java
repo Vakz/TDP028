@@ -15,6 +15,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.API.Serialization.RegisteredGson;
+import se.liu.student.frejo105.beerapp.BeerApp;
 import se.liu.student.frejo105.beerapp.Model.Beer;
 import se.liu.student.frejo105.beerapp.Model.Location;
 import se.liu.student.frejo105.beerapp.Model.Pub;
@@ -38,7 +39,7 @@ public class HttpClient {
     public static void search(String searchword, final RequestCompleteCallback<ArrayList<Beer>> cb) {
         if (Utility.isNullEmptyOrWhitespace(searchword))
         {
-            cb.onFailure(new HttpResponseException(400, Resources.getSystem().getString(R.string.empty_searchword)));
+            cb.onFailure(new HttpResponseException(400, BeerApp.getContext().getResources().getString(R.string.empty_searchword)));
             return;
         }
         RequestParams params = new RequestParams("searchword", searchword);
