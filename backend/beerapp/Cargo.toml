@@ -1,0 +1,13 @@
+[package]
+name = "beerapp"
+version = "0.1.0"
+authors = ["Fredrik Jonsén <fredrikjonsen@gmail.com>"]
+
+[dependencies]
+rustc-serialize = "0.3.19"
+nickel = "*"
+
+[dependencies.mysql]
+version = "*"
+default-features = false
+features = ["socket"]
