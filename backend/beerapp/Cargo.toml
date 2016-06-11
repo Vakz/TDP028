@@ -5,9 +5,15 @@ authors = ["Fredrik Jonsén <fredrikjonsen@gmail.com>"]
 
 [dependencies]
 rustc-serialize = "0.3.19"
-nickel = "*"
+iron = "*"
 
 [dependencies.mysql]
 version = "*"
 default-features = false
 features = ["socket"]
+
+[dependencies.router]
+git = "https://github.com/iron/router.git"
+
+[dependencies.urlencoded]
+version = "*"

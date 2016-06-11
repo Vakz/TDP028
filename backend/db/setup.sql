@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS Brewery;
 DROP PROCEDURE IF EXISTS findClosest;
 DROP PROCEDURE IF EXISTS findWithin;
 DROP FUNCTION IF EXISTS calculateDistance;
+DROP PROCEDURE IF EXISTS search;
 
 CREATE TABLE BeerType(
 	type_name varchar(20) PRIMARY KEY
@@ -72,6 +73,15 @@ BEGIN
 	SELECT *, calculateDistance(gps, p) AS distance FROM Pub
     HAVING distance < max_distance
     ORDER BY distance ASC;
+END
+//
+
+CREATE PROCEDURE search(q varchar(50))
+BEGIN
+	SET @q = CONCAT('%', q, '%');
+	SELECT * FROM Beer WHERE
+    name LIKE @q OR type LIKE @q OR brewery LIKE @q;
+    
 END
 //
 DELIMITER ;
