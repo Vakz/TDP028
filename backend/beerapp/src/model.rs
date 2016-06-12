@@ -3,6 +3,11 @@ use std::collections::BTreeMap;
 use mysql::{FromRow, Row};
 use mysql::Result as MySqlResult;
 use mysql::error::Error as MySqlError;
+use std::num::ParseFloatError;
+
+pub enum BeerModelError {
+    CoordinateParse(ParseFloatError)
+}
 
 #[derive(RustcEncodable)]
 pub struct Beer {
@@ -42,6 +47,24 @@ pub struct Point {
     lat: f64,
     lon: f64
 }
+
+impl Point {
+    fn from_str(lat: &str, lon: &str) -> Result<Point, BeerModelError> {
+        let latitude = match lat.parse::<f64>() {
+            Ok(f) => f,
+            Err(s) => return Err(BeerModelError::CoordinateParse(s))
+        };
+        let longitude = match lon.parse::<f64>() {
+            Ok(f) => f,
+            Err(s) => return Err(BeerModelError::CoordinateParse(s))
+        };
+        Ok(Point {
+            lat: latitude,
+            lon: longitude
+        })
+    }
+}
+
 /*
 impl ToJson for Point {
     fn to_json(&self) -> Json {
