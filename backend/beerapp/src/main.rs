@@ -2,17 +2,23 @@
 #[macro_use] extern crate mysql;
 extern crate rustc_serialize;
 extern crate iron;
-extern crate router;
+#[macro_use] extern crate router;
 extern crate urlencoded;
+extern crate crossbeam;
+extern crate regex;
+#[macro_use] extern crate lazy_static;
 
+use mysql::error::Error as MySqlError;
 use iron::mime::Mime;
 use iron::prelude::*;
 use iron::status;
 use router::Router;
-use mysql::Pool;
+use mysql::{Pool, Row, from_row};
 use urlencoded::UrlEncodedQuery;
 use rustc_serialize::json::{self};
 use std::collections::HashMap;
+use iron::middleware::Handler;
+use mysql::Result as MySqlResult;
 
 use std::sync::Arc;
 
@@ -34,19 +40,22 @@ fn build_pool() -> mysql::Pool {
     mysql::Pool::new(opts).unwrap()
 }
 
-fn get_single<T: mysql::FromRow>(res: mysql::Result<mysql::QueryResult>) -> Option<T> {
+fn get_single<T, F>(res: mysql::Result<mysql::QueryResult>, conv: F) -> Option<T>
+where F: Fn(Row) -> T {
     match res.unwrap().next() {
-        Some(o) => Some(mysql::from_row::<T>(o.unwrap())),
+        Some(o) => Some(conv(o.unwrap())),
         None => None
     }
 }
 
-fn get_all<T: mysql::FromRow>(res: mysql::Result<mysql::QueryResult>) -> Option<Vec<T>> {
-    Some(res.map(|result|
+fn get_all<T, F>(res: mysql::Result<mysql::QueryResult>, conv: F) -> Option<Vec<T>>
+where F: Fn(Row) -> T {
+    let r = res.map(|result|
         result.map(|x| x.unwrap()).map(|row| {
-            mysql::from_row(row)
+            conv(row)
         }).collect::<Vec<T>>()
-    ).unwrap())
+    ).unwrap();
+    if r.len() > 0 { Some(r) } else { None }
 }
 
 fn get_parameters(params: Vec<String>, query: &HashMap<String, Vec<String>>) -> Option<HashMap<String, String>> {
@@ -54,7 +63,8 @@ fn get_parameters(params: Vec<String>, query: &HashMap<String, Vec<String>>) -> 
     for param in &params {
         match query.get(param) {
             Some(v) => match v.get(0) {
-                Some(q) => res.insert(param.to_string(), q.clone()),
+                Some(q) if q.len() > 0 => res.insert(param.to_string(), q.clone()),
+                Some(_) => return None,
                 None => return None
             },
             None => return None
@@ -63,41 +73,195 @@ fn get_parameters(params: Vec<String>, query: &HashMap<String, Vec<String>>) -> 
     return Some(res);
 }
 
-fn search(db: &mut Pool, req: &mut Request) -> IronResult<Response> {
-    if let Some(query) = get_parameters(vec![String::from("query")], req.get_ref::<UrlEncodedQuery>().unwrap()) {
-        let q = query.get("query").unwrap();
-        let b: Vec<Beer> = get_all(db.prep_exec(r"CALL search(:query);", params!{"query" => q})).unwrap();
-        json_response(json::encode(&b).unwrap())
-    } else {
+struct Search {
+    db: Pool,
+}
+
+impl Handler for Search {
+    fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
+            if let Some(query) = get_parameters(vec![String::from("query")], r) {
+                let f = |row| {
+                    let (id, name, t, brewery, desc) = from_row(row);
+
+                    Beer {
+                        id: id,
+                        name: name,
+                        brewery: brewery,
+                        beer_type: t,
+                        description: desc
+                    }
+                };
+
+                let q = query.get("query").unwrap();
+                let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), f).unwrap();
+                return json_response(json::encode(&b).unwrap());
+            }
+        }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing searchword"))))
     }
 }
 
-fn get_menu(db: &mut Pool, req: &mut Request) -> IronResult<Response> {
-    if let Some(query) = get_parameters(vec![String::from("id")], req.get_ref::<UrlEncodedQuery>().unwrap()) {
-        let id = query.get("id").unwrap();
-        match id.parse::<i32>() {
-            Ok(_) => {},
-            Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid id"))))
-        };
-        let menu: Vec<Beer> = get_all(db.prep_exec(r"CALL menu(:id);", params!{"id" => id})).unwrap();
-        json_response(json::encode(&menu).unwrap())
-    } else {
+struct GetMenu {
+    db: Pool,
+}
+
+impl Handler for GetMenu {
+    fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
+            if let Some(query) = get_parameters(vec![String::from("id")], r) {
+                let id = query.get("id").unwrap();
+                match id.parse::<u32>() {
+                    Ok(_) => {},
+                    Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid id"))))
+                };
+
+                let f = |row| {
+                    let (id, name, t, brewery, desc) = from_row(row);
+
+                    Beer {
+                        id: id,
+                        name: name,
+                        brewery: brewery,
+                        beer_type: t,
+                        description: desc
+                    }
+                };
+
+                if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => id}), f) {
+                    return json_response(json::encode(&menu).unwrap());
+                } else {
+                    return Ok(Response::with((status::UnprocessableEntity, String::from("No pub with that id"))));
+                }
+
+            }
+        }
+        Ok(Response::with((status::UnprocessableEntity, String::from("Missing id"))))
+    }
+}
+
+struct GetPub {
+    db: Pool,
+}
+
+impl Handler for GetPub {
+    fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
+            if let Some(query) = get_parameters(vec![String::from("id")], r) {
+                let id = query.get("id").unwrap();
+                match id.parse::<u32>() {
+                    Ok(_) => {}
+                    Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid id"))))
+                };
+
+                let f = |row| {
+                    let (id, name, description, gps): (u32, String, String, String) = from_row(row);
+                    let coords = gps.parse::<Point>().unwrap();
+                    Pub::new(
+                        id,
+                        name,
+                        description,
+                        coords,
+                        None,
+                        None
+                    )
+                };
+
+                if let Some(p) = get_single::<Pub, _>(self.db.prep_exec(r"SELECT * FROM PubText WHERE id = :id", params!{"id" => id}), f) {
+                    return json_response(json::encode(&p).unwrap());
+                }  else {
+                    return Ok(Response::with((status::UnprocessableEntity, String::from("No pub with that id"))));
+                }
+            }
+        }
+        Ok(Response::with((status::UnprocessableEntity, String::from("Missing id"))))
+    }
+}
+
+struct GetNearbyPubs {
+    db: Pool,
+}
+
+impl Handler for GetNearbyPubs {
+    fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
+            if let Some(query) = get_parameters(vec![String::from("lat"), String::from("lon"), String::from("distance")], r) {
+                let (lat, lon, distance) = (query.get("lat").unwrap(), query.get("lon").unwrap(), query.get("distance").unwrap());
+                let loc = match Point::from_strings(lat, lon) {
+                    Ok(l) => l,
+                    Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid location"))))
+                };
+
+                let f = |row| {
+                    let (id, name, description, gps, distance): (u32, String, String, String, u64) = from_row(row);
+                    let coords = gps.parse::<Point>().unwrap();
+                    Pub::new(
+                        id,
+                        name,
+                        description,
+                        coords,
+                        Some(distance),
+                        None
+                    )
+                };
+                println!("CALL findWithin(GeomFromText(\"{}\"), {})", String::from(loc), &distance);
+                if let Some(pubs) = get_all::<Pub, _>(self.db.prep_exec("CALL findWithin(GeomFromText(:point), :distance)",
+                    params!{"point" => String::from(loc), "distance" => distance.clone() }), f) {
+                    return json_response(json::encode(&pubs).unwrap());
+                } else {
+                    return Ok(Response::with((status::UnprocessableEntity, String::from("No pubs within this distance"))));
+                }
+            }
+        }
+        Ok(Response::with((status::UnprocessableEntity, String::from("Missing parameters"))))
+    }
+}
+
+struct GetBeer {
+    db: Pool,
+}
+
+impl Handler for GetBeer {
+    fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
+            if let Some(query) = get_parameters(vec![String::from("id")], r) {
+                let id = query.get("id").unwrap();
+                match id.parse::<u32>() {
+                    Ok(_) => {}
+                    Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid id"))))
+                };
+
+                let f = |row| {
+                    let (id, name, t, brewery, desc) = from_row(row);
+
+                    Beer {
+                        id: id,
+                        name: name,
+                        brewery: brewery,
+                        beer_type: t,
+                        description: desc
+                    }
+                };
+
+                if let Some(p) = get_single::<Beer, _>(self.db.prep_exec(r"SELECT * FROM Beer WHERE id = :id", params!{"id" => id}), f) {
+                    return json_response(json::encode(&p).unwrap());
+                }  else {
+                    return Ok(Response::with((status::UnprocessableEntity, String::from("No beer with that id"))));
+                }
+            }
+        }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing id"))))
     }
 }
 
 fn main() {
     let pool = build_pool();
-    let mut router = Router::new();
-    router.get("/search", |req: &mut Request| {
-        let mut db = pool.clone();
-        search(&mut db, req)
-    });
-    router.get("/menu", |req: &mut Request| {
-        let mut db = pool.clone();
-        get_menu(&mut db, req)
-    });
 
-    Iron::new(router).http("localhost:8888").unwrap();
+    Iron::new(router!(
+        get "/search" => Search { db: pool.clone() },
+        get "/menu" => GetMenu { db: pool.clone() },
+        get "/pub" => GetPub { db: pool.clone() },
+        get "/beer" => GetBeer {db: pool.clone() },
+        get "/getNearby" => GetNearbyPubs { db: pool.clone() },
+    )).http("localhost:8888").unwrap();
 }

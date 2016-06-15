@@ -2,8 +2,11 @@
 name = "beerapp"
 version = "0.1.0"
 dependencies = [
+ "crossbeam 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "iron 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "lazy_static 0.2.1 (git+https://github.com/rust-lang-nursery/lazy-static.rs)",
  "mysql 5.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex 0.1.71 (registry+https://github.com/rust-lang/crates.io-index)",
  "router 0.1.1 (git+https://github.com/iron/router.git)",
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "urlencoded 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -74,6 +77,11 @@ dependencies = [
  "time 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)",
  "url 1.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "crossbeam"
+version = "0.2.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "error"
@@ -167,6 +175,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "lazy_static"
 version = "0.1.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "lazy_static"
+version = "0.2.1"
+source = "git+https://github.com/rust-lang-nursery/lazy-static.rs#ffe65c818474f863945ca535c0e53f3b8b848ff7"
 
 [[package]]
 name = "lazy_static"

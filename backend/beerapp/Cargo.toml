@@ -6,6 +6,8 @@ authors = ["Fredrik Jonsén <fredrikjonsen@gmail.com>"]
 [dependencies]
 rustc-serialize = "0.3.19"
 iron = "*"
+crossbeam="*"
+regex = "*"
 
 [dependencies.mysql]
 version = "*"
@@ -17,3 +19,6 @@ git = "https://github.com/iron/router.git"
 
 [dependencies.urlencoded]
 version = "*"
+
+[dependencies.lazy_static]
+git = "https://github.com/rust-lang-nursery/lazy-static.rs"
