@@ -3,10 +3,8 @@ DROP TABLE IF EXISTS Pub;
 DROP TABLE IF EXISTS Beer;
 DROP TABLE IF EXISTS BeerType;
 DROP TABLE IF EXISTS Brewery;
-DROP PROCEDURE IF EXISTS findClosest;
-DROP PROCEDURE IF EXISTS findWithin;
-DROP FUNCTION IF EXISTS calculateDistance;
-DROP PROCEDURE IF EXISTS search;
+
+
 
 CREATE TABLE BeerType(
 	type_name varchar(20) PRIMARY KEY
@@ -47,41 +45,3 @@ CREATE TABLE Serves(
     CONSTRAINT fk_serves_pub FOREIGN KEY (pubid) REFERENCES Pub(id),
     CONSTRAINT fk_serves_beer FOREIGN KEY (beerid) REFERENCES Beer(id)
 );
-
-DELIMITER //
-
-CREATE FUNCTION calculateDistance(p1 POINT, p2 POINT)
-RETURNS INTEGER
-BEGIN
-	RETURN 6371000 * 2 * ASIN(SQRT(
-            POWER(SIN((X(p1) - abs(X(p2))) * pi()/180 / 2),
-            2) + COS(X(p1) * pi()/180 ) * COS(abs(X(p2)) *
-            pi()/180) * POWER(SIN((Y(p1) - Y(p2)) *
-            pi()/180 / 2), 2) ));
-END
-//
-
-CREATE PROCEDURE findClosest(p POINT)
-BEGIN
-	SELECT *, calculateDistance(gps, p) AS distance FROM Pub
-    ORDER BY distance ASC LIMIT 1;
-END
-//
-
-CREATE PROCEDURE findWithin(p POINT, max_distance INTEGER)
-BEGIN
-	SELECT *, calculateDistance(gps, p) AS distance FROM Pub
-    HAVING distance < max_distance
-    ORDER BY distance ASC;
-END
-//
-
-CREATE PROCEDURE search(q varchar(50))
-BEGIN
-	SET @q = CONCAT('%', q, '%');
-	SELECT * FROM Beer WHERE
-    name LIKE @q OR type LIKE @q OR brewery LIKE @q;
-    
-END
-//
-DELIMITER ;

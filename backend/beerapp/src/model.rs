@@ -78,7 +78,6 @@ impl FromStr for Point {
         lazy_static! {
             static ref POINTREGEX: Regex = Regex::new(r"^POINT\((?P<lat>\d+[.]\d+) (?P<lon>\d+[.]\d+)\)$").unwrap();
         }
-        println!("{}", s);
         let matches = match POINTREGEX.captures(s) {
             Some(m) => m,
             None => return Err(BeerModelError::CoordinateStringParse(String::from("Invalid POINT format")))
