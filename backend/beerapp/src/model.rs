@@ -1,11 +1,7 @@
-use rustc_serialize::json;
-use std::collections::BTreeMap;
 use mysql::{FromRow, Row, from_row};
 use mysql::Result as MySqlResult;
-use mysql::error::Error as MySqlError;
 use std::num::ParseFloatError;
 use std::str::FromStr;
-use std::string::ParseError;
 use regex::Regex;
 use std::convert::From;
 

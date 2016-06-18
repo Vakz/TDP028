@@ -7,19 +7,14 @@ extern crate urlencoded;
 extern crate regex;
 #[macro_use] extern crate lazy_static;
 
-use mysql::error::Error as MySqlError;
 use iron::mime::Mime;
 use iron::prelude::*;
 use iron::status;
-use router::Router;
 use mysql::{Pool, Row, from_row};
 use urlencoded::UrlEncodedQuery;
 use rustc_serialize::json::{self};
 use std::collections::HashMap;
 use iron::middleware::Handler;
-use mysql::Result as MySqlResult;
-
-use std::sync::Arc;
 
 mod model;
 
@@ -114,9 +109,8 @@ impl Handler for Search {
                 let q = query.get("query").unwrap();
                 let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), ModelConverter::beerrow).unwrap_or(Vec::new());
                 return json_response(json::encode(&b).unwrap());
-            } else {
-                return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
             }
+            return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
         }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing searchword"))))
     }
@@ -138,10 +132,8 @@ impl Handler for GetMenu {
 
                 if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => id}), ModelConverter::beerrow) {
                     return json_response(json::encode(&menu).unwrap());
-                } else {
-                    return Ok(Response::with((status::UnprocessableEntity, String::from("No pub with that id"))));
                 }
-
+                return Ok(Response::with((status::UnprocessableEntity, String::from("No pub with that id"))));
             }
         }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing id"))))
@@ -163,15 +155,12 @@ impl Handler for GetPub {
                 };
 
                 if let Some(mut p) = get_single::<Pub, _>(self.db.prep_exec(r"SELECT * FROM PubText WHERE id = :id", params!{"id" => id}), ModelConverter::pubrow) {
-
                     if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => id}), ModelConverter::beerrow) {
                         p.serves = menu;
                         return json_response(json::encode(&p).unwrap());
                     }
-
-                }  else {
-                    return Ok(Response::with((status::UnprocessableEntity, String::from("No pub with that id"))));
                 }
+                return Ok(Response::with((status::UnprocessableEntity, String::from("No pub with that id"))));
             }
         }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing id"))))
@@ -287,12 +276,9 @@ impl Handler for GetClosest {
                     if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => p.id}), ModelConverter::beerrow) {
                         p.serves = menu;
                         return json_response(json::encode(&p).unwrap());
-                    } else {
-                        return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
                     }
-                } else {
-                    return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
                 }
+                return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
             }
         }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing parameters"))))
@@ -312,17 +298,18 @@ impl Handler for Suggestion {
                     Ok(l) => l,
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid location"))))
                 };
+
                 let filter: &String = query.get("filter").unwrap();
                 match json::decode::<Vec<u32>>(filter) {
                     Ok(_) => {},
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid format of filter"))))
                 };
+
                 if let Some(b) = get_single::<Beer, _>(self.db.prep_exec(r"CALL suggestion(GeomFromText(:point), :filter)",
                 params!{"point" => String::from(loc), "filter" => filter.clone()}), ModelConverter::beerrow) {
                     return json_response(json::encode(&b).unwrap());
-                } else {
-                    return Ok(Response::with((status::UnprocessableEntity, String::from("Found no suggestions"))));
                 }
+                return Ok(Response::with((status::UnprocessableEntity, String::from("Found no suggestions"))));
             }
         }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing parameters"))))
