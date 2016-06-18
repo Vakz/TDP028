@@ -87,12 +87,13 @@ where F: Fn(Row) -> T {
     if r.len() > 0 { Some(r) } else { None }
 }
 
-fn get_parameters(params: Vec<String>, query: &HashMap<String, Vec<String>>) -> Option<HashMap<String, String>> {
-    let mut res: HashMap<String, String> = HashMap::new();
-    for param in &params {
-        match query.get(param) {
+fn get_parameters(params: &[&'static str], query: &HashMap<String, Vec<String>>) -> Option<HashMap<&'static str, String>> {
+    let mut res: HashMap<&'static str, String> = HashMap::new();
+    for param in params {
+        let s: String = param.to_string();
+        match query.get(&s) {
             Some(v) => match v.get(0) {
-                Some(q) if q.len() > 0 => res.insert(param.to_string(), q.clone()),
+                Some(q) if q.len() > 0 => res.insert(param, q.clone()),
                 Some(_) => return None,
                 None => return None
             },
@@ -109,10 +110,10 @@ struct Search {
 impl Handler for Search {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(vec![String::from("query")], r) {
+            if let Some(query) = get_parameters(&["query"], r) {
 
                 let q = query.get("query").unwrap();
-                let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), ModelConverter::beerrow).unwrap();
+                let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), ModelConverter::beerrow).unwrap_or(Vec::new());
                 return json_response(json::encode(&b).unwrap());
             } else {
                 return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
@@ -129,7 +130,7 @@ struct GetMenu {
 impl Handler for GetMenu {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(vec![String::from("id")], r) {
+            if let Some(query) = get_parameters(&["id"], r) {
                 let id = query.get("id").unwrap();
                 match id.parse::<u32>() {
                     Ok(_) => {},
@@ -155,7 +156,7 @@ struct GetPub {
 impl Handler for GetPub {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(vec![String::from("id")], r) {
+            if let Some(query) = get_parameters(&["id"], r) {
                 let id = query.get("id").unwrap();
                 match id.parse::<u32>() {
                     Ok(_) => {}
@@ -185,7 +186,7 @@ struct GetNearbyPubs {
 impl Handler for GetNearbyPubs {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(vec![String::from("lat"), String::from("lon"), String::from("distance")], r) {
+            if let Some(query) = get_parameters(&["lat", "lon", "distance"], r) {
                 let (lat, lon, distance) = (query.get("lat").unwrap(), query.get("lon").unwrap(), query.get("distance").unwrap());
                 let loc = match Point::from_strings(lat, lon) {
                     Ok(l) => l,
@@ -215,7 +216,7 @@ struct GetBeer {
 impl Handler for GetBeer {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(vec![String::from("id")], r) {
+            if let Some(query) = get_parameters(&["id"], r) {
                 let id = query.get("id").unwrap();
                 match id.parse::<u32>() {
                     Ok(_) => {}
@@ -240,7 +241,7 @@ struct ServingWithin {
 impl Handler for ServingWithin {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(vec![String::from("id"), String::from("lat"), String::from("lon"), String::from("distance")], r) {
+            if let Some(query) = get_parameters(&["lat", "lon", "distance", "id"], r) {
                 let (lat, lon, distance, id) = (query.get("lat").unwrap(), query.get("lon").unwrap(), query.get("distance").unwrap(), query.get("id").unwrap());
                 let loc = match Point::from_strings(lat, lon) {
                     Ok(l) => l,
@@ -275,7 +276,7 @@ struct GetClosest {
 impl Handler for GetClosest {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(vec![String::from("lat"), String::from("lon")], r) {
+            if let Some(query) = get_parameters(&["lat", "lon"], r) {
                 let (lat, lon) = (query.get("lat").unwrap(), query.get("lon").unwrap());
                 let loc = match Point::from_strings(lat, lon) {
                     Ok(l) => l,
@@ -306,7 +307,7 @@ struct Suggestion {
 impl Handler for Suggestion {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(vec![String::from("lat"), String::from("lon")], r) {
+            if let Some(query) = get_parameters(&["lat", "lon"], r) {
                 let (lat, lon) = (query.get("lat").unwrap(), query.get("lon").unwrap());
                 let loc = match Point::from_strings(lat, lon) {
                     Ok(l) => l,
