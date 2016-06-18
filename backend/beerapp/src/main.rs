@@ -26,6 +26,35 @@ mod model;
 
 use model::*;
 
+struct ModelConverter;
+
+impl ModelConverter {
+    fn beerrow(row: Row) -> Beer {
+        let (id, name, t, brewery, desc) = from_row(row);
+
+        Beer {
+            id: id,
+            name: name,
+            brewery: brewery,
+            beer_type: t,
+            description: desc
+        }
+    }
+
+    fn pubrow(row: Row) -> Pub {
+        let (id, name, description, gps): (u32, String, String, String) = from_row(row);
+        let coords = gps.parse::<Point>().unwrap();
+        Pub::new(
+            id,
+            name,
+            description,
+            coords,
+            None,
+            None
+        )
+    }
+}
+
 fn json_response(body: String) -> IronResult<Response> {
     let content_type = "application/json; charset=utf-8".parse::<Mime>().unwrap();
     Ok(Response::with((content_type, status::Ok, body)))
@@ -81,20 +110,9 @@ impl Handler for Search {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
             if let Some(query) = get_parameters(vec![String::from("query")], r) {
-                let f = |row| {
-                    let (id, name, t, brewery, desc) = from_row(row);
-
-                    Beer {
-                        id: id,
-                        name: name,
-                        brewery: brewery,
-                        beer_type: t,
-                        description: desc
-                    }
-                };
 
                 let q = query.get("query").unwrap();
-                let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), f).unwrap();
+                let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), ModelConverter::beerrow).unwrap();
                 return json_response(json::encode(&b).unwrap());
             } else {
                 return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
@@ -118,19 +136,7 @@ impl Handler for GetMenu {
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid id"))))
                 };
 
-                let f = |row| {
-                    let (id, name, t, brewery, desc) = from_row(row);
-
-                    Beer {
-                        id: id,
-                        name: name,
-                        brewery: brewery,
-                        beer_type: t,
-                        description: desc
-                    }
-                };
-
-                if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => id}), f) {
+                if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => id}), ModelConverter::beerrow) {
                     return json_response(json::encode(&menu).unwrap());
                 } else {
                     return Ok(Response::with((status::UnprocessableEntity, String::from("No pub with that id"))));
@@ -156,33 +162,9 @@ impl Handler for GetPub {
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid id"))))
                 };
 
-                let f = |row| {
-                    let (id, name, description, gps): (u32, String, String, String) = from_row(row);
-                    let coords = gps.parse::<Point>().unwrap();
-                    Pub::new(
-                        id,
-                        name,
-                        description,
-                        coords,
-                        None,
-                        None
-                    )
-                };
+                if let Some(mut p) = get_single::<Pub, _>(self.db.prep_exec(r"SELECT * FROM PubText WHERE id = :id", params!{"id" => id}), ModelConverter::pubrow) {
 
-                if let Some(mut p) = get_single::<Pub, _>(self.db.prep_exec(r"SELECT * FROM PubText WHERE id = :id", params!{"id" => id}), f) {
-                    let f = |row| {
-                        let (id, name, t, brewery, desc) = from_row(row);
-
-                        Beer {
-                            id: id,
-                            name: name,
-                            brewery: brewery,
-                            beer_type: t,
-                            description: desc
-                        }
-                    };
-
-                    if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => id}), f) {
+                    if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => id}), ModelConverter::beerrow) {
                         p.serves = menu;
                         return json_response(json::encode(&p).unwrap());
                     }
@@ -214,20 +196,8 @@ impl Handler for GetNearbyPubs {
                     return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid distance"))));
                 }
 
-                let f = |row| {
-                    let (id, name, description, gps, distance): (u32, String, String, String, u64) = from_row(row);
-                    let coords = gps.parse::<Point>().unwrap();
-                    Pub::new(
-                        id,
-                        name,
-                        description,
-                        coords,
-                        Some(distance),
-                        None
-                    )
-                };
                 if let Some(pubs) = get_all::<Pub, _>(self.db.prep_exec("CALL findWithin(GeomFromText(:point), :distance)",
-                    params!{"point" => String::from(loc), "distance" => distance.clone() }), f) {
+                    params!{"point" => String::from(loc), "distance" => distance.clone() }), ModelConverter::pubrow) {
                     return json_response(json::encode(&pubs).unwrap());
                 } else {
                     return Ok(Response::with((status::UnprocessableEntity, String::from("No pubs within this distance"))));
@@ -252,19 +222,7 @@ impl Handler for GetBeer {
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid id"))))
                 };
 
-                let f = |row| {
-                    let (id, name, t, brewery, desc) = from_row(row);
-
-                    Beer {
-                        id: id,
-                        name: name,
-                        brewery: brewery,
-                        beer_type: t,
-                        description: desc
-                    }
-                };
-
-                if let Some(p) = get_single::<Beer, _>(self.db.prep_exec(r"SELECT * FROM Beer WHERE id = :id", params!{"id" => id}), f) {
+                if let Some(p) = get_single::<Beer, _>(self.db.prep_exec(r"SELECT * FROM Beer WHERE id = :id", params!{"id" => id}), ModelConverter::beerrow) {
                     return json_response(json::encode(&p).unwrap());
                 }  else {
                     return Ok(Response::with((status::UnprocessableEntity, String::from("No beer with that id"))));
@@ -297,21 +255,8 @@ impl Handler for ServingWithin {
                     return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid id"))));
                 }
 
-                let f = |row| {
-                    let (id, name, description, gps, distance): (u32, String, String, String, u64) = from_row(row);
-                    let coords = gps.parse::<Point>().unwrap();
-                    Pub::new(
-                        id,
-                        name,
-                        description,
-                        coords,
-                        Some(distance),
-                        None
-                    )
-                };
-
                 if let Some(p) = get_all::<Pub, _>(self.db.prep_exec(r"CALL servingWithin(GeomFromText(:point), :distance, :id)",
-                params!{"id" => id, "point" => &String::from(loc), "distance" => &distance}), f) {
+                params!{"id" => id, "point" => &String::from(loc), "distance" => &distance}), ModelConverter::pubrow) {
                     return json_response(json::encode(&p).unwrap());
                 } else {
                     return Ok(Response::with((status::UnprocessableEntity, String::from("No pubs serving this beer within that distance"))));
@@ -337,33 +282,9 @@ impl Handler for GetClosest {
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid location"))))
                 };
 
-                let f = |row| {
-                    let (id, name, description, gps, distance): (u32, String, String, String, u64) = from_row(row);
-                    let coords = gps.parse::<Point>().unwrap();
-                    Pub::new(
-                        id,
-                        name,
-                        description,
-                        coords,
-                        Some(distance),
-                        None
-                    )
-                };
+                if let Some(mut p) = get_single::<Pub, _>(self.db.prep_exec(r"CALL findClosest(GeomFromText(:point))", params!{"point" => String::from(loc)}), ModelConverter::pubrow) {
 
-                if let Some(mut p) = get_single::<Pub, _>(self.db.prep_exec(r"CALL findClosest(GeomFromText(:point))", params!{"point" => String::from(loc)}), f) {
-                    let f = |row| {
-                        let (id, name, t, brewery, desc) = from_row(row);
-
-                        Beer {
-                            id: id,
-                            name: name,
-                            brewery: brewery,
-                            beer_type: t,
-                            description: desc
-                        }
-                    };
-
-                    if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => p.id}), f) {
+                    if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => p.id}), ModelConverter::beerrow) {
                         p.serves = menu;
                         return json_response(json::encode(&p).unwrap());
                     } else {
@@ -372,6 +293,25 @@ impl Handler for GetClosest {
                 } else {
                     return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
                 }
+            }
+        }
+        Ok(Response::with((status::UnprocessableEntity, String::from("Missing parameters"))))
+    }
+}
+
+struct Suggestion {
+    db: Pool,
+}
+
+impl Handler for Suggestion {
+    fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
+            if let Some(query) = get_parameters(vec![String::from("lat"), String::from("lon")], r) {
+                let (lat, lon) = (query.get("lat").unwrap(), query.get("lon").unwrap());
+                let loc = match Point::from_strings(lat, lon) {
+                    Ok(l) => l,
+                    Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid location"))))
+                };
             }
         }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing parameters"))))
