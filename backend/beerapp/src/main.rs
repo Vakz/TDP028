@@ -4,7 +4,6 @@ extern crate rustc_serialize;
 extern crate iron;
 #[macro_use] extern crate router;
 extern crate urlencoded;
-extern crate crossbeam;
 extern crate regex;
 #[macro_use] extern crate lazy_static;
 
@@ -307,12 +306,23 @@ struct Suggestion {
 impl Handler for Suggestion {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
-            if let Some(query) = get_parameters(&["lat", "lon"], r) {
+            if let Some(query) = get_parameters(&["lat", "lon", "filter"], r) {
                 let (lat, lon) = (query.get("lat").unwrap(), query.get("lon").unwrap());
                 let loc = match Point::from_strings(lat, lon) {
                     Ok(l) => l,
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid location"))))
                 };
+                let filter: &String = query.get("filter").unwrap();
+                match json::decode::<Vec<u32>>(filter) {
+                    Ok(_) => {},
+                    Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid format of filter"))))
+                };
+                if let Some(b) = get_single::<Beer, _>(self.db.prep_exec(r"CALL suggestion(GeomFromText(:point), :filter)",
+                params!{"point" => String::from(loc), "filter" => filter.clone()}), ModelConverter::beerrow) {
+                    return json_response(json::encode(&b).unwrap());
+                } else {
+                    return Ok(Response::with((status::UnprocessableEntity, String::from("Found no suggestions"))));
+                }
             }
         }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing parameters"))))
@@ -329,6 +339,7 @@ fn main() {
         get "/beer" => GetBeer {db: pool.clone() },
         get "/getNearby" => GetNearbyPubs { db: pool.clone() },
         get "/pubsServing" => ServingWithin { db: pool.clone() },
-        get "/getClosest" => GetClosest { db: pool.clone() }
+        get "/getClosest" => GetClosest { db: pool.clone() },
+        get "/suggestion" => Suggestion { db: pool.clone() }
     )).http("localhost:8888").unwrap();
 }

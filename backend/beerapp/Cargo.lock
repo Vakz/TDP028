@@ -2,7 +2,6 @@
 name = "beerapp"
 version = "0.1.0"
 dependencies = [
- "crossbeam 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "iron 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 0.2.1 (git+https://github.com/rust-lang-nursery/lazy-static.rs)",
  "mysql 5.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -77,11 +76,6 @@ dependencies = [
  "time 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)",
  "url 1.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
-
-[[package]]
-name = "crossbeam"
-version = "0.2.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "error"
