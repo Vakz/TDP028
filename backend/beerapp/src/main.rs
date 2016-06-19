@@ -15,6 +15,9 @@ use urlencoded::UrlEncodedQuery;
 use rustc_serialize::json::{self};
 use std::collections::HashMap;
 use iron::middleware::Handler;
+use router::Router;
+use std::fs::File;
+use std::path::Path;
 
 mod model;
 
@@ -329,6 +332,25 @@ impl Handler for Suggestion {
     }
 }
 
+struct Images;
+
+impl Handler for Images {
+    fn handle(&self, req: &mut Request) -> IronResult<Response> {
+        let name = match req.extensions.get::<Router>().unwrap().find("name") {
+            Some(s) => s,
+            None => return Ok(Response::with((status::UnprocessableEntity, String::from("Missing filename"))))
+        };
+        println!("Request image: {}", name);
+        let path = Path::new("images/").join(name);
+        let image = match File::open(path) {
+            Ok(i) => i,
+            Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("No file with that name"))))
+        };
+        let content_type = "image/jpg".parse::<Mime>().unwrap();
+        Ok(Response::with((status::Ok, image, content_type)))
+    }
+}
+
 fn main() {
     let pool = build_pool();
 
@@ -340,6 +362,7 @@ fn main() {
         get "/getNearby" => GetNearbyPubs { db: pool.clone() },
         get "/pubsServing" => ServingWithin { db: pool.clone() },
         get "/getClosest" => GetClosest { db: pool.clone() },
-        get "/suggestion" => Suggestion { db: pool.clone() }
+        get "/suggestion" => Suggestion { db: pool.clone() },
+        get "/images/:name" => Images {}
     )).http("localhost:8888").unwrap();
 }
