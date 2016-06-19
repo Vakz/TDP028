@@ -47,6 +47,19 @@ impl ModelConverter {
             None
         )
     }
+
+    fn distancerow(row: Row) -> Pub {
+        let (id, name, description, gps, distance): (u32, String, String, String, u64) = from_row(row);
+        let coords = gps.parse::<Point>().unwrap();
+        Pub::new(
+            id,
+            name,
+            description,
+            coords,
+            Some(distance),
+            None
+        )
+    }
 }
 
 fn json_response(body: String) -> IronResult<Response> {
@@ -186,7 +199,7 @@ impl Handler for GetNearbyPubs {
                 }
 
                 if let Some(pubs) = get_all::<Pub, _>(self.db.prep_exec("CALL findWithin(GeomFromText(:point), :distance)",
-                    params!{"point" => String::from(loc), "distance" => distance.clone() }), ModelConverter::pubrow) {
+                    params!{"point" => String::from(loc), "distance" => distance.clone() }), ModelConverter::distancerow) {
                     return json_response(json::encode(&pubs).unwrap());
                 } else {
                     return Ok(Response::with((status::UnprocessableEntity, String::from("No pubs within this distance"))));
@@ -245,7 +258,7 @@ impl Handler for ServingWithin {
                 }
 
                 if let Some(p) = get_all::<Pub, _>(self.db.prep_exec(r"CALL servingWithin(GeomFromText(:point), :distance, :id)",
-                params!{"id" => id, "point" => &String::from(loc), "distance" => &distance}), ModelConverter::pubrow) {
+                params!{"id" => id, "point" => &String::from(loc), "distance" => &distance}), ModelConverter::distancerow) {
                     return json_response(json::encode(&p).unwrap());
                 } else {
                     return Ok(Response::with((status::UnprocessableEntity, String::from("No pubs serving this beer within that distance"))));
@@ -271,7 +284,7 @@ impl Handler for GetClosest {
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid location"))))
                 };
 
-                if let Some(mut p) = get_single::<Pub, _>(self.db.prep_exec(r"CALL findClosest(GeomFromText(:point))", params!{"point" => String::from(loc)}), ModelConverter::pubrow) {
+                if let Some(mut p) = get_single::<Pub, _>(self.db.prep_exec(r"CALL findClosest(GeomFromText(:point))", params!{"point" => String::from(loc)}), ModelConverter::distancerow) {
 
                     if let Some(menu) = get_all::<Beer, _>(self.db.prep_exec(r"CALL menu(:id);", params!{"id" => p.id}), ModelConverter::beerrow) {
                         p.serves = menu;
