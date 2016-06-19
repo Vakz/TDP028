@@ -2,48 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="se.liu.student.frejo105.beerapp">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <application
-        android:name=".BeerApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-        <activity
-            android:name=".Activities.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.DrawerMenuActivity"
-            android:label="@string/title_activity_drawer_menu"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activities.SearchActivity"
-
-            android:label="@string/title_activity_search_beer"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".Activities.PubDisplayActivity"
-            android:label="@string/title_activity_pub_display"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB97FulMPfagDPYYoisypUr_YVCetuAW2U" />
-
-
     </application>
 
 </manifest>
