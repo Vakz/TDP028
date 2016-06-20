@@ -17,8 +17,8 @@ public class MainActivity extends DrawerMenuActivity {
         setContentView(R.layout.activity_main);
 
         Point p = new Point();
-        p.latitude = 55.4115954;
-        p.longitude = 15.6022470000000;
+        p.latitude = 55.41125954;
+        p.longitude = 15.60224700000;
         HttpClient.getClosest(p, new HttpCallback<Pub>() {
 
             @Override
