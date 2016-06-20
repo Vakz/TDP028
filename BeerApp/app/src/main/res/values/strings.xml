@@ -4,4 +4,7 @@
     <string name="empty_searchword">Search cannot be empty</string>
     <string name="invalid_distance">Distance cannot be negative</string>
     <string name="image_fail">Unable to retrieve image</string>
+    <string name="drawer_toggle_open">Opening drawer menu</string>
+    <string name="drawer_toggle_close">Closing drawer menu</string>
+    <string name="action_settings">Settings</string>
 </resources>
