@@ -43,7 +43,6 @@ public class HttpClient {
             cb.onFailure(new HttpResponseException(400, BeerApp.getContext().getResources().getString(R.string.empty_searchword)));
             return;
         }
-        System.out.println(Utility.isNullEmptyOrWhitespace(query));
         RequestParams params = new RequestParams("query", query);
         makeArrayCall(getCompleteUrl("search"), params, Beer.class, cb);
     }
