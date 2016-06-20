@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BeerApp</string>
+    <string name="invalid_id">Invalid id</string>
+    <string name="empty_searchword">Search cannot be empty</string>
+    <string name="invalid_distance">Distance cannot be negative</string>
+    <string name="image_fail">Unable to retrieve image</string>
 </resources>
