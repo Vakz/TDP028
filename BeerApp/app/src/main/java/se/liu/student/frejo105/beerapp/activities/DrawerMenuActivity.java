@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp.Activities;
+package se.liu.student.frejo105.beerapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

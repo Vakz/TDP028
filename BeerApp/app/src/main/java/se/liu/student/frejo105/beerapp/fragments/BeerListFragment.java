@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp.Fragments;
+package se.liu.student.frejo105.beerapp.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,8 +12,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import se.liu.student.frejo105.beerapp.API.Model.Beer;
-import se.liu.student.frejo105.beerapp.Adapters.BeerListAdapter;
+import se.liu.student.frejo105.beerapp.api.model.Beer;
+import se.liu.student.frejo105.beerapp.adapters.BeerListAdapter;
 import se.liu.student.frejo105.beerapp.R;
 
 public class BeerListFragment extends Fragment {

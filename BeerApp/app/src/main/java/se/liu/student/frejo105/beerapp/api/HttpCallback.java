@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp.API;
+package se.liu.student.frejo105.beerapp.api;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
 

@@ -6,10 +6,10 @@ import com.google.gson.JsonParser;
 import org.json.JSONException;
 import org.junit.Test;
 
-import se.liu.student.frejo105.beerapp.API.Model.Beer;
-import se.liu.student.frejo105.beerapp.API.Model.Point;
-import se.liu.student.frejo105.beerapp.API.Model.Pub;
-import se.liu.student.frejo105.beerapp.API.Serialization.RegisteredGson;
+import se.liu.student.frejo105.beerapp.api.model.Beer;
+import se.liu.student.frejo105.beerapp.api.model.Point;
+import se.liu.student.frejo105.beerapp.api.model.Pub;
+import se.liu.student.frejo105.beerapp.api.serialization.RegisteredGson;
 
 import static org.junit.Assert.assertEquals;
 

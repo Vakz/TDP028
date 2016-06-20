@@ -1,17 +1,12 @@
-package se.liu.student.frejo105.beerapp.Activities;
+package se.liu.student.frejo105.beerapp.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.util.ArrayList;
-
 import cz.msebera.android.httpclient.client.HttpResponseException;
-import se.liu.student.frejo105.beerapp.API.HttpCallback;
-import se.liu.student.frejo105.beerapp.API.HttpClient;
-import se.liu.student.frejo105.beerapp.API.Model.Beer;
-import se.liu.student.frejo105.beerapp.API.Model.Point;
-import se.liu.student.frejo105.beerapp.API.Model.Pub;
-import se.liu.student.frejo105.beerapp.Activities.DrawerMenuActivity;
+import se.liu.student.frejo105.beerapp.api.HttpCallback;
+import se.liu.student.frejo105.beerapp.api.HttpClient;
+import se.liu.student.frejo105.beerapp.api.model.Point;
+import se.liu.student.frejo105.beerapp.api.model.Pub;
 import se.liu.student.frejo105.beerapp.R;
 
 public class MainActivity extends DrawerMenuActivity {

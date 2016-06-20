@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp.API.Model;
+package se.liu.student.frejo105.beerapp.api.model;
 
 import java.util.ArrayList;
 

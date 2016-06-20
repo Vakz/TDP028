@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp.API.Serialization;
+package se.liu.student.frejo105.beerapp.api.serialization;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -10,9 +10,9 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import se.liu.student.frejo105.beerapp.API.Model.Beer;
-import se.liu.student.frejo105.beerapp.API.Model.Point;
-import se.liu.student.frejo105.beerapp.API.Model.Pub;
+import se.liu.student.frejo105.beerapp.api.model.Beer;
+import se.liu.student.frejo105.beerapp.api.model.Point;
+import se.liu.student.frejo105.beerapp.api.model.Pub;
 
 /**
  * Created by vakz on 2016-06-19.

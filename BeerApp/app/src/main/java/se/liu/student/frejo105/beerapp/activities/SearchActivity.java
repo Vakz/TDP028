@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp.Activities;
+package se.liu.student.frejo105.beerapp.activities;
 
 import android.app.FragmentManager;
 import android.graphics.Color;
@@ -9,10 +9,10 @@ import android.view.View;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
-import se.liu.student.frejo105.beerapp.API.HttpCallback;
-import se.liu.student.frejo105.beerapp.API.HttpClient;
-import se.liu.student.frejo105.beerapp.API.Model.Beer;
-import se.liu.student.frejo105.beerapp.Fragments.BeerListFragment;
+import se.liu.student.frejo105.beerapp.api.HttpCallback;
+import se.liu.student.frejo105.beerapp.api.HttpClient;
+import se.liu.student.frejo105.beerapp.api.model.Beer;
+import se.liu.student.frejo105.beerapp.fragments.BeerListFragment;
 import se.liu.student.frejo105.beerapp.R;
 
 public class SearchActivity extends DrawerMenuActivity
@@ -29,6 +29,7 @@ implements BeerListFragment.ItemSelectedInterface {
         beerListFragment = new BeerListFragment();
         FragmentManager t = getFragmentManager();
         t.beginTransaction().replace(R.id.search_container, beerListFragment).commit();
+        t.executePendingTransactions();
 
         pushList();
     }

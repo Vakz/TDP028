@@ -1,4 +1,4 @@
-package se.liu.student.frejo105.beerapp.API;
+package se.liu.student.frejo105.beerapp.api;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
@@ -7,20 +7,18 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.client.HttpResponseException;
-import se.liu.student.frejo105.beerapp.API.Model.Beer;
-import se.liu.student.frejo105.beerapp.API.Model.Pub;
-
-import android.content.res.Resources;
+import se.liu.student.frejo105.beerapp.api.model.Beer;
+import se.liu.student.frejo105.beerapp.api.model.Pub;
 
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import se.liu.student.frejo105.beerapp.API.Model.Point;
-import se.liu.student.frejo105.beerapp.API.Serialization.RegisteredGson;
+import se.liu.student.frejo105.beerapp.api.model.Point;
+import se.liu.student.frejo105.beerapp.api.serialization.RegisteredGson;
 import se.liu.student.frejo105.beerapp.BeerApp;
 import se.liu.student.frejo105.beerapp.R;
-import se.liu.student.frejo105.beerapp.Utility.Utility;
+import se.liu.student.frejo105.beerapp.utility.Utility;
 
 /**
  * Created by vakz on 2016-06-20.
@@ -112,11 +110,12 @@ public class HttpClient {
     }
 
     public static void getImage(int id, File file, final HttpCallback<File> cb) {
+        System.out.println("Getting an image");
         if (id < 0) {
             cb.onFailure(new HttpResponseException(400, BeerApp.getContext().getResources().getString(R.string.invalid_id)));
             return;
         }
-        String url = String.format("%s/%s.jpg", address, id);
+        String url = String.format("%s/images/%s.jpg", address, id);
         httpClient.get(url, null, new FileAsyncHttpResponseHandler(file) {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
