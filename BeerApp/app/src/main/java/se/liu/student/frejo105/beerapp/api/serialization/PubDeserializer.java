@@ -33,7 +33,7 @@ public class PubDeserializer implements JsonDeserializer<Pub> {
             try {
                 p.distance = jsonObject.get("distance").getAsDouble();
             }
-            catch (Exception _) {
+            catch (Exception e) {
                 p.distance = -1;
             }
 
@@ -46,7 +46,7 @@ public class PubDeserializer implements JsonDeserializer<Pub> {
 
             return p;
         }
-        catch(Exception _) {
+        catch(Exception e) {
             throw new JsonParseException("Unable to parse pub");
         }
 

@@ -27,7 +27,7 @@ public class BeerDeserializer implements JsonDeserializer<Beer> {
 
             return b;
         }
-        catch(Exception _) {
+        catch(Exception e) {
             throw new JsonParseException("Unable to parse beer");
         }
     }

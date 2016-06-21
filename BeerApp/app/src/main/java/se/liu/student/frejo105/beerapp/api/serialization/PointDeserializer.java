@@ -23,7 +23,7 @@ public class PointDeserializer implements JsonDeserializer<Point> {
             p.latitude = jsonObject.get("lat").getAsDouble();
             return p;
         }
-        catch(Exception _) {
+        catch(Exception e) {
             throw new JsonParseException("Unable to parse point");
         }
     }
