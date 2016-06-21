@@ -1,6 +1,7 @@
 package se.liu.student.frejo105.beerapp.activities;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ public class SearchActivity extends DrawerMenuActivity
 implements BeerListFragment.ItemSelectedInterface {
 
     public static final String QUERY_KEY = "QUERY";
+    private static final String SEARCH_FRAGMENT = "SEARCH_FRAGMENT";
     BeerListFragment beerListFragment;
 
     @Override
@@ -28,7 +30,10 @@ implements BeerListFragment.ItemSelectedInterface {
 
         beerListFragment = new BeerListFragment();
         FragmentManager t = getFragmentManager();
-        t.beginTransaction().replace(R.id.search_container, beerListFragment).commit();
+        t.popBackStack(SEARCH_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        t.beginTransaction().
+                replace(R.id.search_container, beerListFragment).
+                addToBackStack(SEARCH_FRAGMENT).commit();
         t.executePendingTransactions();
 
         pushList();
@@ -66,6 +71,14 @@ implements BeerListFragment.ItemSelectedInterface {
 
     @Override
     public void onClick(Beer beer) {
-        System.out.println(beer.name);
+        Intent intent = new Intent(this, BeerDetailsActivity.class);
+        intent.putExtra(BeerDetailsActivity.FULL_BEER_PARAM, beer);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
