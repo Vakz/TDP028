@@ -21,6 +21,7 @@ import se.liu.student.frejo105.beerapp.api.model.Pub;
 import se.liu.student.frejo105.beerapp.fragments.BeerDetailsFragment;
 import se.liu.student.frejo105.beerapp.fragments.PubListFragment;
 import se.liu.student.frejo105.beerapp.utility.LocationCallback;
+import se.liu.student.frejo105.beerapp.utility.PersistantStorage;
 
 public class BeerDetailsActivity extends DrawerMenuActivity
 implements PubListFragment.ItemSelectedInterface{
@@ -52,7 +53,7 @@ implements PubListFragment.ItemSelectedInterface{
 
                         @Override
                         public void onFailure(HttpResponseException hre) {
-                            // Failed to get a suggestion, nothing to do
+                            showSearchError(hre.getMessage());
                         }
                     });
                 }
