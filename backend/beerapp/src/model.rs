@@ -72,7 +72,7 @@ impl FromStr for Point {
     type Err = BeerModelError;
     fn from_str(s: &str) -> Result<Self, <Self as FromStr>::Err> {
         lazy_static! {
-            static ref POINTREGEX: Regex = Regex::new(r"^POINT\((?P<lat>\d+[.]\d+) (?P<lon>\d+[.]\d+)\)$").unwrap();
+            static ref POINTREGEX: Regex = Regex::new(r"^POINT\((?P<lat>-?\d+[.]\d+) (?P<lon>-?\d+[.]\d+)\)$").unwrap();
         }
         let matches = match POINTREGEX.captures(s) {
             Some(m) => m,

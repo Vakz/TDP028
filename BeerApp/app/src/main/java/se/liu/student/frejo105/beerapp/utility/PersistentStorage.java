@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by vakz on 2016-06-22.
  */
-public class PersistantStorage extends SQLiteOpenHelper {
+public class PersistentStorage extends SQLiteOpenHelper {
 
     /* https://developer.android.com/guide/topics/data/data-storage.html */
     private static final String DATABASE_NAME = "BeerStorage";
@@ -30,7 +30,7 @@ public class PersistantStorage extends SQLiteOpenHelper {
 
     }
 
-    public PersistantStorage(Context context) {
+    public PersistentStorage(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -59,5 +59,13 @@ public class PersistantStorage extends SQLiteOpenHelper {
         c.close();
         sqld.close();
         return ids;
+    }
+
+    public boolean isTested(int id) {
+        SQLiteDatabase sqld = getReadableDatabase();
+        Cursor c = sqld.query(TESTED_TABLE_NAME, null, "id = " + id, null, null, null, null, null);
+        boolean contained = c.getCount() == 1;
+        c.close();
+        return contained;
     }
 }
