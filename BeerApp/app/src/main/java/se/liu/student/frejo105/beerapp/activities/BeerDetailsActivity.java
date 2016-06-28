@@ -1,10 +1,8 @@
 package se.liu.student.frejo105.beerapp.activities;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,7 +19,7 @@ import se.liu.student.frejo105.beerapp.api.model.Pub;
 import se.liu.student.frejo105.beerapp.fragments.BeerDetailsFragment;
 import se.liu.student.frejo105.beerapp.fragments.PubListFragment;
 import se.liu.student.frejo105.beerapp.utility.LocationCallback;
-import se.liu.student.frejo105.beerapp.utility.PersistantStorage;
+import se.liu.student.frejo105.beerapp.utility.PersistentStorage;
 
 public class BeerDetailsActivity extends DrawerMenuActivity
 implements PubListFragment.ItemSelectedInterface{

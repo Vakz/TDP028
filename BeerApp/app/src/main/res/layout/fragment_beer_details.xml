@@ -12,11 +12,30 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
     </ImageView>
-    <TextView
-        android:textStyle="bold"
-        android:id="@+id/item_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="30dp"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/tested_button"
+            android:layout_height="35dp"
+            android:layout_width="match_parent"
+            android:text="@string/untested"
+            android:layout_margin="0dp"
+            android:textScaleX="0.5"
+            android:background="#ff4a4a"
+            android:textColor="#ffffff"
+            android:layout_gravity="end"
+            android:layout_weight="3"/>
+    </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

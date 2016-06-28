@@ -54,7 +54,7 @@ public class BeerListAdapter extends ArrayAdapter<Beer> {
         return convertView;
     }
 
-    public void setBeerList(ArrayList<Beer> list) {
+    public void setBeerList(List<Beer> list) {
         this.list.clear();
         this.list.addAll(list);
     }

@@ -15,4 +15,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.CheckedButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#2196f3</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="AppTheme.UncheckedButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#ff4a4a</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
 </resources>

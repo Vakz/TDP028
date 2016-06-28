@@ -11,12 +11,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import se.liu.student.frejo105.beerapp.api.model.Beer;
 import se.liu.student.frejo105.beerapp.adapters.BeerListAdapter;
 import se.liu.student.frejo105.beerapp.R;
 
+// TODO: Add Tested/Untested button
+
 public class BeerListFragment extends Fragment {
+
+    public static final String OPTIONAL_BEER_LIST ="beer_list";
 
     BeerListAdapter items;
     ItemSelectedInterface mListener;
@@ -36,7 +41,7 @@ public class BeerListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_beer_list, container, false);
     }
 
-    public void setBeerList(final ArrayList<Beer> list) {
+    public void setBeerList(final List<Beer> list) {
         items.setBeerList(list);
     }
 
@@ -46,9 +51,17 @@ public class BeerListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        items = new BeerListAdapter(getContext(), new ArrayList<Beer>());
+        List<Beer> items;
+        Bundle args = getArguments();
+        if (args.containsKey(OPTIONAL_BEER_LIST)) {
+            items = args.getParcelableArrayList((OPTIONAL_BEER_LIST));
+        }
+        else {
+            items = new ArrayList<Beer>();
+        }
+        this.items = new BeerListAdapter(getContext(), items);
         ListView lw = ((ListView)view.findViewById(R.id.beer_list));
-        lw.setAdapter(items);
+        lw.setAdapter(this.items);
         lw.setOnItemClickListener(itemSelect);
         super.onViewCreated(view, savedInstanceState);
     }

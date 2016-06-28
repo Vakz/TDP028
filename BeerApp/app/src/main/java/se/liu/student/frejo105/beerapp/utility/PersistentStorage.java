@@ -49,6 +49,14 @@ public class PersistentStorage extends SQLiteOpenHelper {
         return success;
     }
 
+    public boolean deleteId(int id) {
+        SQLiteDatabase sqld = getWritableDatabase();
+        if (id < 0) return false;
+        boolean success = sqld.delete(TESTED_TABLE_NAME, "id = " + id, null) == 1;
+        sqld.close();
+        return success;
+    }
+
     public List<Integer> getTestedIds()  {
         ArrayList<Integer> ids = new ArrayList<>();
         SQLiteDatabase sqld = getReadableDatabase();
@@ -66,6 +74,7 @@ public class PersistentStorage extends SQLiteOpenHelper {
         Cursor c = sqld.query(TESTED_TABLE_NAME, null, "id = " + id, null, null, null, null, null);
         boolean contained = c.getCount() == 1;
         c.close();
+        sqld.close();
         return contained;
     }
 }
