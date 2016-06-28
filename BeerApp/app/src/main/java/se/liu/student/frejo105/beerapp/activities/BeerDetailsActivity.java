@@ -1,6 +1,7 @@
 package se.liu.student.frejo105.beerapp.activities;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
@@ -99,8 +100,8 @@ implements PubListFragment.ItemSelectedInterface{
 
                     @Override
                     public void onFailure(HttpResponseException hre) {
-                        System.out.println("Got here");
-                        // Do nothing
+                        // May fail to find nearby pubs for multiple reasons. Not essential,
+                        // so we do no error recovery
                     }
                 });
             }
@@ -142,6 +143,11 @@ implements PubListFragment.ItemSelectedInterface{
 
     @Override
     public void onClick(Pub pub) {
-        System.out.println(pub.name);
+        if (pub == null) {
+            System.out.println("PUB WAS NULL");
+        }
+        Intent intent = new Intent(this, PubDetailsActivity.class);
+        intent.putExtra(PubDetailsActivity.FULL_PUB_PARAM, pub);
+        startActivity(intent);
     }
 }

@@ -11,4 +11,8 @@
     <string name="retry">Retry</string>
     <string name="tested">✔ Tested</string>
     <string name="untested">✘ Untested</string>
+    <string name="no_pub_param">No pub parameter</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

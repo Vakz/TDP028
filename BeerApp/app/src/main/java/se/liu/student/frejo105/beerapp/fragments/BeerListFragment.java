@@ -32,7 +32,7 @@ public class BeerListFragment extends Fragment {
         }
     };
 
-    public BeerListFragment() { }
+    public BeerListFragment() {    }
 
 
     @Override
@@ -53,14 +53,14 @@ public class BeerListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         List<Beer> items;
         Bundle args = getArguments();
-        if (args.containsKey(OPTIONAL_BEER_LIST)) {
-            items = args.getParcelableArrayList((OPTIONAL_BEER_LIST));
+        if (args != null && args.containsKey(OPTIONAL_BEER_LIST)) {
+            items = args.getParcelableArrayList(OPTIONAL_BEER_LIST);
         }
         else {
-            items = new ArrayList<Beer>();
+            items = new ArrayList<>();
         }
         this.items = new BeerListAdapter(getContext(), items);
-        ListView lw = ((ListView)view.findViewById(R.id.beer_list));
+        ListView lw = (ListView)view.findViewById(R.id.beer_list);
         lw.setAdapter(this.items);
         lw.setOnItemClickListener(itemSelect);
         super.onViewCreated(view, savedInstanceState);

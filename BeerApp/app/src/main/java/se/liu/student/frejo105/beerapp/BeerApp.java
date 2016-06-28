@@ -9,6 +9,9 @@ import android.content.Context;
 public class BeerApp extends Application {
     private static Context context;
 
+    public static final String TESTED_COLOR = "#2196f3";
+    public static final String UNTESTED_COLOR = "#ff4a4a";
+
     @Override
     public void onCreate() {
         super.onCreate();

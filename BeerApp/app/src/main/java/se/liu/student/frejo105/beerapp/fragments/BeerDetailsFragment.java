@@ -12,9 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import cz.msebera.android.httpclient.client.HttpResponseException;
+import se.liu.student.frejo105.beerapp.BeerApp;
 import se.liu.student.frejo105.beerapp.R;
 import se.liu.student.frejo105.beerapp.api.HttpCallback;
 import se.liu.student.frejo105.beerapp.api.model.Beer;
@@ -25,8 +24,6 @@ public class BeerDetailsFragment extends Fragment
 implements Button.OnClickListener {
 
     public static final String BEER_PARAM = "BEER_PARAM";
-    private static final String TESTED_COLOR = "#2196f3";
-    private static final String UNTESTED_COLOR = "#ff4a4a";
     Beer beer;
 
     public BeerDetailsFragment() {
@@ -77,11 +74,12 @@ implements Button.OnClickListener {
         boolean isTested = ps.isTested(beer.id);
         if (isTested) {
             button.setText(getString(R.string.tested));
-            button.setBackgroundColor(Color.parseColor(TESTED_COLOR));
+
+            button.setBackgroundColor(Color.parseColor(BeerApp.TESTED_COLOR));
         }
         else {
             button.setText(getString(R.string.untested));
-            button.setBackgroundColor(Color.parseColor(UNTESTED_COLOR));
+            button.setBackgroundColor(Color.parseColor(BeerApp.UNTESTED_COLOR));
         }
     }
 
