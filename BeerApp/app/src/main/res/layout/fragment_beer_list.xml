@@ -5,6 +5,7 @@
     tools:context="se.liu.student.frejo105.beerapp.fragments.BeerListFragment">
 
     <ListView
+        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/beer_list">

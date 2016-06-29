@@ -17,8 +17,6 @@ import se.liu.student.frejo105.beerapp.api.model.Beer;
 import se.liu.student.frejo105.beerapp.adapters.BeerListAdapter;
 import se.liu.student.frejo105.beerapp.R;
 
-// TODO: Add Tested/Untested button
-
 public class BeerListFragment extends Fragment {
 
     public static final String OPTIONAL_BEER_LIST ="beer_list";
