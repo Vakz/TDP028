@@ -143,11 +143,16 @@ implements PubListFragment.ItemSelectedInterface{
 
     @Override
     public void onClick(Pub pub) {
-        if (pub == null) {
-            System.out.println("PUB WAS NULL");
-        }
         Intent intent = new Intent(this, PubDetailsActivity.class);
         intent.putExtra(PubDetailsActivity.FULL_PUB_PARAM, pub);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // Actually reusing activity would be rather complex, simply
+        // create a new one instead
+        finish();
         startActivity(intent);
     }
 }

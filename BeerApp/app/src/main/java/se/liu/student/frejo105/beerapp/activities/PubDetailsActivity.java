@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.AdapterView;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.R;
@@ -32,8 +33,6 @@ public class PubDetailsActivity extends DrawerMenuActivity
         setContentView(R.layout.activity_pub_details);
 
         setupPub();
-
-
     }
 
     private void setupPub() {
@@ -98,8 +97,11 @@ public class PubDetailsActivity extends DrawerMenuActivity
 
     @Override
     public void onClick(Beer beer) {
-        Intent intent = new Intent(this, BeerDetailsActivity.class);
-        intent.putExtra(BeerDetailsActivity.FULL_BEER_PARAM, beer);
-        startActivity(intent);
+        Intent i = new Intent(this, BeerDetailsActivity.class);
+        i.putExtra(BeerDetailsActivity.FULL_BEER_PARAM, beer);
+        startActivity(i);
+
     }
+
+
 }

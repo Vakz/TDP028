@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- General idea for using the drawer layout from http://stackoverflow.com/questions/4922641/sliding-drawer-appear-in-all-activities#4922740 -->
 <android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawercontainer"
+    android:id="@+id/drawer_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -37,8 +37,8 @@
         android:id="@+id/left_drawer"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
+        android:divider="#89959eaa"
+        android:dividerHeight="1dp"
         android:background="#cad2e4">
     </ListView>
 

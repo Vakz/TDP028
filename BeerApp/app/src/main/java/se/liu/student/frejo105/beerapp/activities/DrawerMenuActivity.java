@@ -1,6 +1,7 @@
 package se.liu.student.frejo105.beerapp.activities;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,7 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,15 +30,21 @@ import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.R;
+import se.liu.student.frejo105.beerapp.api.HttpCallback;
+import se.liu.student.frejo105.beerapp.api.HttpClient;
 import se.liu.student.frejo105.beerapp.api.model.Point;
+import se.liu.student.frejo105.beerapp.api.model.Pub;
 import se.liu.student.frejo105.beerapp.utility.LocationCallback;
 
-/**
- * Created by vakz on 2016-06-20.
- */
+
 public abstract class DrawerMenuActivity extends AppCompatActivity
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        ListView.OnItemClickListener
+{
+
+    private static final String[] DRAWER_TITLES = new String[] { "New suggestion", "Find closest pub" };
 
     protected GoogleApiClient locationApi;
     private List<LocationCallback> locationListener = new ArrayList<>();
@@ -77,6 +89,7 @@ public abstract class DrawerMenuActivity extends AppCompatActivity
         Bundle b = new Bundle();
         b.putString(SearchActivity.QUERY_KEY, query);
         searchIntent.putExtra(SearchActivity.QUERY_KEY, query);
+        searchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(searchIntent);
         //finish();
     }
@@ -87,6 +100,17 @@ public abstract class DrawerMenuActivity extends AppCompatActivity
         FrameLayout content = (FrameLayout)container.findViewById(R.id.contentframe);
         getLayoutInflater().inflate(layoutResID, content, true);
         super.setContentView(container);
+
+        ListView drawerList = (ListView)container.findViewById(R.id.left_drawer);
+        drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, DRAWER_TITLES));
+        drawerList.setOnItemClickListener(this);
+
+        TextView header = new TextView(drawerList.getContext());
+        header.setText(getString(R.string.drawer_menu_header));
+        header.setTextSize(24);
+        header.setPadding(20, 10, 0, 10);
+        drawerList.addHeaderView(header);
+
         setupToolbar(container);
     }
 
@@ -94,7 +118,7 @@ public abstract class DrawerMenuActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) container.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggler = new ActionBarDrawerToggle(this, container, toolbar, R.string.drawer_toggle_open, R.string.drawer_toggle_close);
-        container.setDrawerListener(toggler);
+        container.addDrawerListener(toggler);
     }
 
     @Override
@@ -152,7 +176,38 @@ public abstract class DrawerMenuActivity extends AppCompatActivity
 
     protected void getLocation(LocationCallback lc) {
         locationListener.add(lc);
-        if(locationListener.size() == 1) locationApi.connect();
+        if (locationListener.size() == 1) locationApi.connect();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ((DrawerLayout)findViewById(R.id.drawer_container)).closeDrawers();
+        if (position == 1) {
+            final Intent i = new Intent(this, BeerDetailsActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(i);
+        }
+        else if (position == 2) {
+            final Intent i = new Intent(this, PubDetailsActivity.class);
+            getLocation(new LocationCallback() {
+                @Override
+                public void onDone(Point point) {
+                    HttpClient.getClosest(point, new HttpCallback<Pub>() {
+                        @Override
+                        public void onSuccess(Pub result) {
+                            i.putExtra(PubDetailsActivity.FULL_PUB_PARAM, result);
+                            startActivity(i);
+                        }
+
+                        @Override
+                        public void onFailure(HttpResponseException hre) {
+
+                        }
+                    });
+                }
+            });
+        }
+
     }
 
 }
