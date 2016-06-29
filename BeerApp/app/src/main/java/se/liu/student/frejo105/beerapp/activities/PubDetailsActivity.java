@@ -1,6 +1,7 @@
 package se.liu.student.frejo105.beerapp.activities;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
@@ -97,6 +98,8 @@ public class PubDetailsActivity extends DrawerMenuActivity
 
     @Override
     public void onClick(Beer beer) {
-        System.out.println(beer.name);
+        Intent intent = new Intent(this, BeerDetailsActivity.class);
+        intent.putExtra(BeerDetailsActivity.FULL_BEER_PARAM, beer);
+        startActivity(intent);
     }
 }

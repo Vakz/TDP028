@@ -11,17 +11,25 @@ import se.liu.student.frejo105.beerapp.api.HttpCallback;
 import se.liu.student.frejo105.beerapp.api.HttpClient;
 import se.liu.student.frejo105.beerapp.api.model.Beer;
 import se.liu.student.frejo105.beerapp.api.model.Pub;
-import se.liu.student.frejo105.beerapp.fragments.BeerDetailsFragment;
 import se.liu.student.frejo105.beerapp.fragments.BeerListFragment;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by vakz on 2016-06-28.
  */
-public class PubTabsAdapter extends FragmentPagerAdapter {
+public class PubTabsAdapter extends FragmentPagerAdapter
+implements OnMapReadyCallback {
 
     Pub pub;
     BeerListFragment bdf;
-    private static final String titles[] = new String[] {"Menu"};
+    MapFragment mf;
+    private static final String titles[] = new String[] {"Menu", "Map"};
 
     public PubTabsAdapter(FragmentManager f, Pub pub) {
         super(f);
@@ -33,6 +41,8 @@ public class PubTabsAdapter extends FragmentPagerAdapter {
         switch (getPageTitle(position).toString()) {
             case "Menu":
                 return bdf == null ? setupMenu() : bdf;
+            case "Map":
+                return mf == null ? setupMap() : mf;
             default:
                 return null;
         }
@@ -41,6 +51,12 @@ public class PubTabsAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return titles.length;
+    }
+
+    private Fragment setupMap() {
+        mf = new MapFragment();
+        mf.getMapAsync(this);
+        return mf;
     }
 
     private Fragment setupMenu() {
@@ -62,5 +78,13 @@ public class PubTabsAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return titles[position];
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng loc = new LatLng(pub.location.latitude, pub.location.longitude);
+
+        googleMap.addMarker(new MarkerOptions().position(loc).title(pub.name));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f));
     }
 }
