@@ -43,7 +43,7 @@ public class PersistentStorage extends SQLiteOpenHelper {
             success = true;
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+
         }
         sqld.close();
         return success;

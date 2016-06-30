@@ -6,3 +6,32 @@ Skiv ett stycke om vad du kan använda kunskapen i pappret till när du bygger
 appar. Bedöm trovärdigheten i källan. På vilket sätt är källa stark/svag som stöd i en argumentation.
 
 Använd korrekt format på referenser enligt någon standard.
+
+
+------------------------------------------------------------------
+Pujol, N., 2010. Freemium: attributes of an emerging business model. Available at SSRN 1718663.
+
+Artikeln är relativt gammal, och skriven precis i starten av app-eran, då
+freemium-appar inte ännu var särskilt mainstream. Det som i huvudsak finns att lära
+är det generella kring freemium: En gratis version och en betald version, som båda
+riktar sig mot samma målgrupp. I min app skulle detta i huvudsak delas upp i att
+gratis-versionen skulle vara så som appen ser ut idag: backenden fungerar som en
+en-vägsdatabas där användaren kan hämta ut information, men inte lagra något. En
+betald version skulle rimligen utöka detta till att ge användaren möjlighet att
+lagra sin information i backenden, vilket då även skulle ge starten till ett
+mer faktiskt användarsystem, som skulle tillåta användare att exempel skapa
+listor med rekommendationer, som de kan dela.
+
+-----------------------------------------------------------------
+
+Kumar V. Making'Freemium'Work. (https://hbr.org/2014/05/making-freemium-work/ar/1)
+
+Denna artikeln fokuserar på att hjälpa en utvecklare att dela upp sin app; vad
+ska vara gratis, vad ska vara "premium". Som ovan nämnt, är det tämligen enkelt
+att hitta vad som bör vara gratis: de funktioner som endast hämtar saker ifrån backenden.
+Artikeln nämner även en önskan att användarna i sin tur fungerar som "reklam" mot
+nya potentiella användare. Förslagsvis skulle därför, igen som ovan nämnt, funktionalitet
+för att dela saker från appen vara en idé för att uppnå detta. Gällande trovärdigheten
+tycker jag den verkar hög. Att den är från Harvard Business School för vara meriterande
+nog i sig. Artikeln använder även verkligen exempel, så som LinkedIn och Dropbox,
+där dess kanske enda riktiga nackdel är att analysen är relativt subjektiv.

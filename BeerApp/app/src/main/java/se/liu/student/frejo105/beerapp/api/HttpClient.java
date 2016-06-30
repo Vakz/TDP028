@@ -111,7 +111,6 @@ public class HttpClient {
     }
 
     public static void getImage(int id, File file, final HttpCallback<File> cb) {
-        System.out.println("Getting an image");
         if (id < 0) {
             cb.onFailure(new HttpResponseException(400, BeerApp.getContext().getResources().getString(R.string.invalid_id)));
             return;

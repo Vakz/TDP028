@@ -42,9 +42,6 @@ implements Parcelable{
     }
 
     public Point(Location location) {
-        if (location == null) {
-            System.out.println("Big issues");
-        }
         latitude = location.getLatitude();
         longitude = location.getLongitude();
     }

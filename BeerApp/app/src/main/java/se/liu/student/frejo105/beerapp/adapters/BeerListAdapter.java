@@ -21,9 +21,6 @@ import se.liu.student.frejo105.beerapp.R;
 import se.liu.student.frejo105.beerapp.utility.ImageHandler;
 import se.liu.student.frejo105.beerapp.utility.PersistentStorage;
 
-/**
- * Created by vakz on 2016-06-20.
- */
 public class BeerListAdapter extends ArrayAdapter<Beer> {
     List<Beer> list;
 
