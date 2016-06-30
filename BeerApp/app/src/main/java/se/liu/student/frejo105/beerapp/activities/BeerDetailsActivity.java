@@ -1,7 +1,9 @@
 package se.liu.student.frejo105.beerapp.activities;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
@@ -44,7 +46,16 @@ implements PubListFragment.ItemSelectedInterface{
                 @Override
                 public void onDone(Point point) {
                     if (point == null) return;
-                    HttpClient.suggestion(point, null, new HttpCallback<Beer>() {
+
+                    List<Integer> filter = null;
+
+                    SharedPreferences settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
+                    if (settings.getBoolean("includeTested", false)) {
+                        PersistentStorage ps = new PersistentStorage(BeerDetailsActivity.this);
+                        filter = ps.getTestedIds();
+                    }
+
+                    HttpClient.suggestion(point, filter, new HttpCallback<Beer>() {
                         @Override
                         public void onSuccess(Beer result) {
                             setupFragment(result);
@@ -92,7 +103,13 @@ implements PubListFragment.ItemSelectedInterface{
         getLocation(new LocationCallback() {
             @Override
             public void onDone(Point point) {
-                HttpClient.pubsServing(point, beer.id, 1000000000, new HttpCallback<ArrayList<Pub>>() {
+                SharedPreferences settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
+                int distance = settings.getInt("distance", 20);
+                if (settings.getBoolean("isKm", false)) {
+                    distance *= 1000;
+                }
+
+                HttpClient.pubsServing(point, beer.id, distance, new HttpCallback<ArrayList<Pub>>() {
                     @Override
                     public void onSuccess(ArrayList<Pub> result) {
                         setupPubFragment(result);

@@ -26,11 +26,11 @@
             android:layout_weight="1" />
         <Button
             android:id="@+id/tested_button"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_width="match_parent"
             android:text="@string/untested"
             android:layout_margin="0dp"
-            android:textScaleX="0.5"
+            android:textSize="10dp"
             android:background="#ff4a4a"
             android:textColor="#ffffff"
             android:layout_gravity="end"

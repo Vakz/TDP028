@@ -13,7 +13,9 @@
     <string name="untested">✘ Untested</string>
     <string name="no_pub_param">No pub parameter</string>
     <string name="drawer_menu_header">QuickNav</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings">Settings</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="include_tested">Include tested in suggestions</string>
+    <string name="max_distance">In radius of</string>
 </resources>

@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,6 +37,7 @@ import se.liu.student.frejo105.beerapp.api.HttpCallback;
 import se.liu.student.frejo105.beerapp.api.HttpClient;
 import se.liu.student.frejo105.beerapp.api.model.Point;
 import se.liu.student.frejo105.beerapp.api.model.Pub;
+import se.liu.student.frejo105.beerapp.fragments.SettingsFragment;
 import se.liu.student.frejo105.beerapp.utility.LocationCallback;
 
 
@@ -82,6 +84,19 @@ public abstract class DrawerMenuActivity extends AppCompatActivity
             }
         });
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                SettingsFragment f = new SettingsFragment();
+                f.show(getFragmentManager(), "Settings");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     public void doSearch(String query) {

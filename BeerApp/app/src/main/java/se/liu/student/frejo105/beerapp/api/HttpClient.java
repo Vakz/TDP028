@@ -13,6 +13,7 @@ import se.liu.student.frejo105.beerapp.api.model.Pub;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import se.liu.student.frejo105.beerapp.api.model.Point;
 import se.liu.student.frejo105.beerapp.api.serialization.RegisteredGson;
@@ -45,7 +46,7 @@ public class HttpClient {
         makeArrayCall(getCompleteUrl("search"), params, Beer.class, cb);
     }
 
-    public static void suggestion(Point location, ArrayList<Integer> filter, final HttpCallback<Beer> cb) {
+    public static void suggestion(Point location, List<Integer> filter, final HttpCallback<Beer> cb) {
         if (filter == null) {
             filter = new ArrayList<>();
         }
