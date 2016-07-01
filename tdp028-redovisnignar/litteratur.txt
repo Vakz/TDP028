@@ -32,6 +32,25 @@ att hitta vad som bör vara gratis: de funktioner som endast hämtar saker ifrå
 Artikeln nämner även en önskan att användarna i sin tur fungerar som "reklam" mot
 nya potentiella användare. Förslagsvis skulle därför, igen som ovan nämnt, funktionalitet
 för att dela saker från appen vara en idé för att uppnå detta. Gällande trovärdigheten
-tycker jag den verkar hög. Att den är från Harvard Business School för vara meriterande
-nog i sig. Artikeln använder även verkligen exempel, så som LinkedIn och Dropbox,
+tycker jag den verkar hög. Att den är från Harvard Business School får vara meriterande
+nog i sig. Artikeln använder även verkliga exempel, så som LinkedIn och Dropbox,
 där dess kanske enda riktiga nackdel är att analysen är relativt subjektiv.
+
+-----------------------------------------------------------------
+
+Zhong, N. and Michahelles, F., 2013, March. Google play is not a long tail market:
+an empirical analysis of app adoption on the Google play app market. In
+Proceedings of the 28th Annual ACM Symposium on Applied Computing (pp. 499-504). ACM.
+
+Artikeln fokuserar på marknadsföring, och att faktiskt få appen synbar på Google
+Play, vilket normalt är den absolut primära leveransplatformen. Den är väldigt
+analytisk. Datan är dock insamlad genom Appaware, vilket gör att "deltagarna"
+inte är särskilt slumpmässigt utvalda, då det rör sig om en app som frivilligt
+och manuellt installeras. Överlag bör det ändå vara en tillräckligt mängd data
+att den kan vara hyffsat representativ av verkligheten. Som artikeln nämner
+utgör användarna som faktiskt betalar för en app en liten andel av den totala
+användarbasen, vilket innebär att min app kanske inte borde inrikta sig alltför
+mycket på att få användare att betala (genom de ovan nämnda metoderna), utan
+det kanske istället är en bättre idé att fokusera på de andra möjliga inkomstkällorna,
+d.v.s. pubbar och bryggerier som kan använda appen som marknadsföring (exempelvis genom
+högre prioritering på listor, hamna överst i menyer).
