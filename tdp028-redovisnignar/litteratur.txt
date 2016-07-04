@@ -54,3 +54,19 @@ mycket på att få användare att betala (genom de ovan nämnda metoderna), utan
 det kanske istället är en bättre idé att fokusera på de andra möjliga inkomstkällorna,
 d.v.s. pubbar och bryggerier som kan använda appen som marknadsföring (exempelvis genom
 högre prioritering på listor, hamna överst i menyer).
+
+----------------------------------------------------------------
+
+Khalid, H., Shihab, E., Nagappan, M. and Hassan, A.E., 2015. What do mobile app
+users complain about?. IEEE Software, 32(3), pp.70-77.
+
+Det mesta i denna artikeln är kanske hyffsat självsägande. Det är inte helt
+oväntat att det vanligaste klagomålet är "Functional Error", alltså att
+appen helt enkelt inte fungerar. I huvudsak kan man väl använda datan i artikeln
+för att bestämma vad som ska fokuseras på. Det är intressant att det som det
+minst klagas på är "Resource Heavy". Rimligen är alltså detta inte något som
+irriterar användare alltför mycket, och man skulle kunna dra slutsatsen att
+det är okej att använda lite mer resurser än nödvändigt för att vara säker på
+att resultatet blir bra. Ett exempel skulle vara att i min app ha GPSen igång
+kontinuerligt, för att uppdatera vad som är närmast, istället för att använda
+senast kända positionen och sedan stänga av GPSen, som det är designat nu.
