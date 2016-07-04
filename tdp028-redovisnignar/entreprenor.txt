@@ -7,3 +7,26 @@ produkt levererar. Men man behveör hitta conternuerliga betalegenskaper.
 Förbrukningsbara värden, prenumerationstjänster i relation till produkten.
 Betänk global konkurrens. Vad kommer andra att lätt kuna ge bort för att ta
 dina kunder.
+
+----------------------------------------------------------------------------
+
+Appen har i huvudsak två målgrupper, med en möjlig tredje. Det absolut största
+är såklart konsumenterna: de som använder appen för att hitta nya drycker att
+testa och nya pubbar att besöka. Den andra gruppen är pubbarna: de som skulle
+kunna tänkas använda appen för att kunna hittas. Speciellt användbar skulle
+appen vara för de pubbar som specialiserats för just öl, och har ett större
+eller ovanligare utbud än sina konkurrenter. Detta är troligtvis även den
+grupp som kan tänkas ha ett löpande avtal, och därmed bidra till en kontinuerlig
+inkomst. Den tredje, möjliga, gruppen skulle kunna vara bryggerier. Denna delen
+av appen är just nu inte särskild utbyggd, och existerar inte i större del än
+att namnen finns där. Funktioner skulle kunna läggas till är att exempelvis
+priotiera öl som nyligen släppts.
+
+Att direkt implementera freemium skulle kunna bli svårt. Möjliga saker användare
+skulle kunna tänkas betala för i appen, är sådant som att synca sin data (så
+som testade öler, besökta pubbar), att kunna ta bilder från pub-besök och lägga
+upp. Detta är troligtvis inte funktionalitet som många skulle kunna tänkas
+betala för kontinuerligt, utan skulle isåfall betalas genom en premium-version
+av appen, som betalas en gång. En idé för saker som skulle kunna betalas för
+löpande, skulle vara att pubbar kan lägga upp ölprovnings-tillfällen, där plats
+endast kan bokas av en användare som har ett "uppgraderat" medlemskap.
