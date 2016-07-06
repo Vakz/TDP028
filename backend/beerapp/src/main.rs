@@ -94,7 +94,7 @@ where F: Fn(Row) -> T {
             conv(row)
         }).collect::<Vec<T>>()
     ).unwrap();
-    if r.len() > 0 { Some(r) } else { None }
+    if !r.is_empty() { Some(r) } else { None }
 }
 
 fn get_parameters(params: &[&'static str], query: &HashMap<String, Vec<String>>) -> Option<HashMap<&'static str, String>> {
@@ -103,14 +103,13 @@ fn get_parameters(params: &[&'static str], query: &HashMap<String, Vec<String>>)
         let s: String = param.to_string();
         match query.get(&s) {
             Some(v) => match v.get(0) {
-                Some(q) if q.len() > 0 => res.insert(param, q.clone()),
-                Some(_) => return None,
-                None => return None
+                Some(q) if !q.is_empty() => res.insert(param, q.clone()),
+                Some(_) | None => return None
             },
             None => return None
         };
     };
-    return Some(res);
+    Some(res)
 }
 
 struct Search {
@@ -123,7 +122,7 @@ impl Handler for Search {
             if let Some(query) = get_parameters(&["query"], r) {
 
                 let q = query.get("query").unwrap();
-                let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), ModelConverter::beerrow).unwrap_or(Vec::new());
+                let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), ModelConverter::beerrow).unwrap_or_default();
                 return json_response(json::encode(&b).unwrap());
             }
             return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
@@ -163,6 +162,7 @@ struct GetPub {
 impl Handler for GetPub {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         if let Ok(r) = req.get_ref::<UrlEncodedQuery>() {
+
             if let Some(query) = get_parameters(&["id"], r) {
                 let id = query.get("id").unwrap();
                 match id.parse::<u32>() {
@@ -314,7 +314,6 @@ impl Handler for Suggestion {
                     Ok(l) => l,
                     Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("Invalid location"))))
                 };
-
                 let filter: &String = query.get("filter").unwrap();
                 match json::decode::<Vec<u32>>(filter) {
                     Ok(_) => {},

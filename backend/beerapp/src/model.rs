@@ -22,12 +22,13 @@ pub struct Beer {
 
 impl FromRow for Beer {
     fn from_row(row: Row) -> Beer {
-        FromRow::from_row_opt(row).ok().expect("Could not convert to type Beer")
+        FromRow::from_row_opt(row).expect("Could not convert to type Beer")
     }
 
     fn from_row_opt(row: Row) -> MySqlResult<Beer> {
 
         let (id, name, t, brewery, desc) = from_row(row);
+
 
         Ok(Beer {
             id: id,
@@ -113,7 +114,7 @@ impl Pub {
 
 impl FromRow for Pub {
     fn from_row(row: Row) -> Pub {
-        FromRow::from_row_opt(row).ok().expect("Could not convert to type Beer")
+        FromRow::from_row_opt(row).expect("Could not convert to type Beer")
     }
 
     fn from_row_opt(row: Row) -> MySqlResult<Pub> {
