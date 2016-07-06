@@ -13,3 +13,59 @@ det inte finns något. Det är ok att tänka mer i vilken kategori din app hamna
 Reflektera över hur du kan positionera din app i förhållande till konkurrenter. Hur måste du designa din app för att skilja dig eller
 fokusera mer på någoin relevant delmängd för att bli unik i förhållande till konkurenterna.
 1.
+
+--------------------------------------------------------------------------------
+Google Maps
+
+Maps är såklart inte särskilt lik min app, men eftersom den är förinstallerad
+och välkänd kan den enda tänkas konkurrera med min app då den innehåller
+en av mina huvudfunktioner: att hitta pubbar i närheten. Genom att ange sin
+plats och söka på pubbar i närheten får man upp namn, plats, kontaktinformation,
+vägbeskrivning. Detta konkurrerar även mot den andra målgrupperna, just pubbarna.
+Att synas på Google Maps är gratis, vilket skulle vara svårt för min app, då
+pubbarna antagligen skulle vara en av de större inkomstkällorna. Fördelarna
+min app erbjuder är möjligheten att faktiskt lägga upp sin meny och en
+beskrivning, vilket inte är möjligt i Google Maps.
+
+--------------------------------------------------------------------------------
+Untappd - Discover Beer
+
+En hyffsat populär app. Dess största nackdel direkt vid starten är att inloggning
+är ett krav, där namn, email, kön och födelsedatum måste anges. Appen verkar
+fokuserat på USA, och mycket funkationlitet som inte är applicerbart är med
+(exempelvis finns en stor knapp för "Order an Uber to this location" på varje pubs
+sida, vilket inte är tillgängligt utanför Stockholm). I övrigt erbjuder appen
+i stort sett all funkationlitet min app har. Appen verkar helt och hållet vara
+gratis för användaren, och verkar helt och hållet vara finansierad genom att
+pubbarna betalar (en separat app finns för dem) för data och analys. Fokuset
+ligger på den sociala den, och nästan alla delar av UIt är för att ta sig mellan
+olika sociala sidor, som nyhetsflöden från vänner, bilder och recensioner från
+folk i närheten. Enligt appens beskrivning ska man kunna få "Personalized beer
+recommendations based on the tastes of you and your friends", men jag kan inte
+hitta i appen hur man faktiskt får fram dem, vilket gör det svårt att jämföra.
+Eftersom Untappd i stort sett innehåller all funkationlitet min app har, men
+även mycket utöver det, är väl egentligen min apps största fördel att den
+är mindre, och UIt blir mer minimalistiskt och intuitivt. Den andra, kanske största
+fördelen är såklart att min app inte kräver någon inloggning, speciellt då
+Untappd kräver en verifierad epost-address.
+
+--------------------------------------------------------------------------------
+Beer Citizen
+
+En app mer fokuserad på öl än pubbar. Funkationliten är hyffsat simpel: listor
+finns med populäraste ölerna, och man kan få en lista med nyligen recenserade.
+All funktionalitet för att komma ihåg om man provat en öl eller inte kräver
+att man blir medlem, vilket kräver en verifierad email. Recensionerna som kan
+göras har en hel del val, där exempelvis "Apperance" är uppdelat i ett femton-tal
+olika delar. Förslag på öler kan fås genom att välja en öl och klicka på "Similar".
+Eftersom appen inte innehåller någon information om pubbar går det inte att genom
+appen se vart de faktiskt går att få tag på. Min apps såklart stora fördel är att
+pubbar finns med, och är mer användbar för de som är ute efter en öl just nu i närheten,
+exempelvis turister. Beer Citizen verkar ha ett större fokus på de som ofta
+vill testa något nytt, men då också har möjligheten att planera i förväg. Appen
+är helt gratis, och öl och bryggerier kan läggas till av användare (som är inloggade),
+och jag kan inte hitta något som jag direkt kan tänka mig är deras inkomstkälla,
+vilket möjligtvis också skulle var en av min apps stora fördelar: en helt gratis
+app som tillåter användare att ladda upp mycket data till en central server  är
+såklart inte speciellt skalbar. I dagsläget har appen inte särskilt många
+användare, och kan rimligtvis inte växa mycket.
