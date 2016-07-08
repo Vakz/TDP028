@@ -23,7 +23,6 @@ mer faktiskt användarsystem, som skulle tillåta användare att exempel skapa
 listor med rekommendationer, som de kan dela.
 
 -----------------------------------------------------------------
-
 Kumar V. Making'Freemium'Work. (https://hbr.org/2014/05/making-freemium-work/ar/1)
 
 Denna artikeln fokuserar på att hjälpa en utvecklare att dela upp sin app; vad
@@ -37,7 +36,6 @@ nog i sig. Artikeln använder även verkliga exempel, så som LinkedIn och Dropb
 där dess kanske enda riktiga nackdel är att analysen är relativt subjektiv.
 
 -----------------------------------------------------------------
-
 Zhong, N. and Michahelles, F., 2013, March. Google play is not a long tail market:
 an empirical analysis of app adoption on the Google play app market. In
 Proceedings of the 28th Annual ACM Symposium on Applied Computing (pp. 499-504). ACM.
@@ -56,7 +54,6 @@ d.v.s. pubbar och bryggerier som kan använda appen som marknadsföring (exempel
 högre prioritering på listor, hamna överst i menyer).
 
 ----------------------------------------------------------------
-
 Khalid, H., Shihab, E., Nagappan, M. and Hassan, A.E., 2015. What do mobile app
 users complain about?. IEEE Software, 32(3), pp.70-77.
 
@@ -70,3 +67,22 @@ det är okej att använda lite mer resurser än nödvändigt för att vara säke
 att resultatet blir bra. Ett exempel skulle vara att i min app ha GPSen igång
 kontinuerligt, för att uppdatera vad som är närmast, istället för att använda
 senast kända positionen och sedan stänga av GPSen, som det är designat nu.
+
+--------------------------------------------------------------------------------
+Liu, C.Z., Au, Y.A. and Choi, H.S., 2012. An empirical study of the freemium
+strategy for mobile apps: Evidence from the google play market.
+
+Den stora frågeställningen i denna artikeln är egentligen huruvida Freemium
+fungerar över huvudtaget, och vad dom ska fokuseras på i gratis-versionen av
+appen. Gällande trovärdigheten är artikeln egentligen så pass utförlig som är
+möjligt, då egentligen alla artiklar måste förlita sig på den data som Google
+Play gör tillgängligt. Det såklart viktigaste i artikeln är att Freemium verkligen
+fungerar, och bidrar till högre försäljning av den betalda versionen. Detta i sig
+är såklart inget som hjälper en utveckla appar. Mer viktigt att lära är den
+stora skillnaden mellan "nyttiga" appar, och appar ämnade för underhållning. I
+det första fallet, vilket antagligen är den kategori min app faller under, visar
+artikeln att det är viktigare med en högt betyg än att ha hög rank. Som den förra
+artikeln visade, bör det absolut viktigaste att tänka på under utveckligen vara
+att se till att allt är väl genomtänkt och testat, då rena krasher och
+trasiga funktioner svarar för den största kategorin av anledningar att en app
+får dåligt betyg av användare.
