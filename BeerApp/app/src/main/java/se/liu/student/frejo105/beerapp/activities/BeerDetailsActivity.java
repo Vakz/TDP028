@@ -105,7 +105,7 @@ implements PubListFragment.ItemSelectedInterface{
             public void onDone(Point point) {
                 SharedPreferences settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
                 int distance = settings.getInt("distance", 20);
-                if (settings.getBoolean("isKm", false)) {
+                if (settings.getBoolean("isKm", true)) {
                     distance *= 1000;
                 }
 
