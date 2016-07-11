@@ -13,9 +13,6 @@ import se.liu.student.frejo105.beerapp.api.serialization.RegisteredGson;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by vakz on 2016-06-19.
- */
 public class DeserializeTest {
     @Test
     public void deserializePoint() throws JSONException {

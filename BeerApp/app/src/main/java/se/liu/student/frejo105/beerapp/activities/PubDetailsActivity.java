@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.AdapterView;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import se.liu.student.frejo105.beerapp.R;
@@ -20,7 +19,7 @@ import se.liu.student.frejo105.beerapp.api.model.Pub;
 import se.liu.student.frejo105.beerapp.fragments.BeerListFragment;
 import se.liu.student.frejo105.beerapp.fragments.PubDetailsFragment;
 
-public class PubDetailsActivity extends DrawerMenuActivity
+public class PubDetailsActivity extends BeerAppBaseActivity
         implements BeerListFragment.ItemSelectedInterface {
 
     public static final String PUB_ID_PARAM = "PUB_ID_PARAM";

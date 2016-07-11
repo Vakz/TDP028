@@ -10,9 +10,6 @@ import java.lang.reflect.Type;
 
 import se.liu.student.frejo105.beerapp.api.model.Point;
 
-/**
- * Created by vakz on 2016-06-19.
- */
 public class PointDeserializer implements JsonDeserializer<Point> {
     @Override
     public Point deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

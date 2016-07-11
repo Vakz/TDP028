@@ -15,9 +15,6 @@ import se.liu.student.frejo105.beerapp.api.HttpCallback;
 import se.liu.student.frejo105.beerapp.api.HttpClient;
 import se.liu.student.frejo105.beerapp.R;
 
-/**
- * Created by vakz on 2016-06-20.
- */
 public class ImageHandler {
     /* http://developer.android.com/training/displaying-bitmaps/cache-bitmap.html */
     private final static LruCache<String, Bitmap> memoryBitmapCache = new LruCache<String, Bitmap>((int)Runtime.getRuntime().maxMemory() / (1024*8)) {

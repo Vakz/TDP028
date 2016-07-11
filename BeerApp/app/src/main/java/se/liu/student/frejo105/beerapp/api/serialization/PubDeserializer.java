@@ -14,9 +14,6 @@ import se.liu.student.frejo105.beerapp.api.model.Beer;
 import se.liu.student.frejo105.beerapp.api.model.Point;
 import se.liu.student.frejo105.beerapp.api.model.Pub;
 
-/**
- * Created by vakz on 2016-06-19.
- */
 public class PubDeserializer implements JsonDeserializer<Pub> {
 
     @Override

@@ -5,9 +5,6 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-/**
- * Created by vakz on 2016-06-19.
- */
 public class Pub
 implements Parcelable{
     public int id;

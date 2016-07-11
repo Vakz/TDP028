@@ -21,9 +21,6 @@ import se.liu.student.frejo105.beerapp.BeerApp;
 import se.liu.student.frejo105.beerapp.R;
 import se.liu.student.frejo105.beerapp.utility.Utility;
 
-/**
- * Created by vakz on 2016-06-20.
- */
 public class HttpClient {
     private static final String address = "http://vps.vakz.se:8888/";
     private static AsyncHttpClient httpClient = new AsyncHttpClient();

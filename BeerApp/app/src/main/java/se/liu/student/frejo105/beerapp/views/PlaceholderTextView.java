@@ -7,9 +7,6 @@ import android.widget.TextView;
 
 import se.liu.student.frejo105.beerapp.R;
 
-/**
- * Created by vakz on 2016-07-11.
- */
 public class PlaceholderTextView extends TextView {
 
     private String pre = "";

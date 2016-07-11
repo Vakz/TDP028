@@ -41,7 +41,7 @@ import se.liu.student.frejo105.beerapp.fragments.SettingsFragment;
 import se.liu.student.frejo105.beerapp.utility.LocationCallback;
 
 
-public abstract class DrawerMenuActivity extends AppCompatActivity
+public abstract class BeerAppBaseActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         ListView.OnItemClickListener
 {

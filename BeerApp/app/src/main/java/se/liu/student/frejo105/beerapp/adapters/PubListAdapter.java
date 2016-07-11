@@ -16,9 +16,6 @@ import se.liu.student.frejo105.beerapp.api.model.Point;
 import se.liu.student.frejo105.beerapp.api.model.Pub;
 import se.liu.student.frejo105.beerapp.utility.Utility;
 
-/**
- * Created by vakz on 2016-06-21.
- */
 public class PubListAdapter extends ArrayAdapter<Pub> {
 
     List<Pub> items;

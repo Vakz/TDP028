@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.liu.student.frejo105.beerapp.BeerApp;
 import se.liu.student.frejo105.beerapp.R;
 import se.liu.student.frejo105.beerapp.adapters.PubListAdapter;
 import se.liu.student.frejo105.beerapp.api.model.Pub;
@@ -58,8 +59,8 @@ public class PubListFragment extends Fragment {
         PlaceholderTextView ptv = (PlaceholderTextView)view.findViewById(R.id.pubs_serving_header);
 
         SharedPreferences settings = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
-        String distance = Integer.toString(settings.getInt("distance", 20));
-        String unit = settings.getBoolean("isKm", true) ? " km" : " m";
+        String distance = Integer.toString(settings.getInt("distance", BeerApp.DEFAULT_DISTANCE));
+        String unit = settings.getBoolean("isKm", BeerApp.DEFAULT_UNIT_KM) ? " km" : " m";
         ptv.setPlaceholder(distance + unit);
 
         items = new PubListAdapter(getContext(), new ArrayList<Pub>());

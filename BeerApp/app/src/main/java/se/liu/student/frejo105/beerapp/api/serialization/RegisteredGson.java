@@ -13,9 +13,6 @@ import se.liu.student.frejo105.beerapp.api.model.Beer;
 import se.liu.student.frejo105.beerapp.api.model.Point;
 import se.liu.student.frejo105.beerapp.api.model.Pub;
 
-/**
- * Created by vakz on 12/28/15.
- */
 public class RegisteredGson {
     private static Gson gson;
     private static RegisteredGson ourInstance = null;

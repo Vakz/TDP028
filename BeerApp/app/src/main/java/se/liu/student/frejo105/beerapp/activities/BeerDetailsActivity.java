@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.client.HttpResponseException;
+import se.liu.student.frejo105.beerapp.BeerApp;
 import se.liu.student.frejo105.beerapp.R;
 import se.liu.student.frejo105.beerapp.api.HttpCallback;
 import se.liu.student.frejo105.beerapp.api.HttpClient;
@@ -24,7 +25,7 @@ import se.liu.student.frejo105.beerapp.fragments.PubListFragment;
 import se.liu.student.frejo105.beerapp.utility.LocationCallback;
 import se.liu.student.frejo105.beerapp.utility.PersistentStorage;
 
-public class BeerDetailsActivity extends DrawerMenuActivity
+public class BeerDetailsActivity extends BeerAppBaseActivity
 implements PubListFragment.ItemSelectedInterface{
 
     public static final String BEER_ID_PARAM = "BEER_ID_PARAM";
@@ -50,7 +51,7 @@ implements PubListFragment.ItemSelectedInterface{
                     List<Integer> filter = null;
 
                     SharedPreferences settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
-                    if (settings.getBoolean("includeTested", false)) {
+                    if (settings.getBoolean("includeTested", BeerApp.DEFAULT_INCLUDE_TESTED)) {
                         PersistentStorage ps = new PersistentStorage(BeerDetailsActivity.this);
                         filter = ps.getTestedIds();
                     }
@@ -104,9 +105,8 @@ implements PubListFragment.ItemSelectedInterface{
             @Override
             public void onDone(Point point) {
                 SharedPreferences settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
-                int distance = settings.getInt("distance", 20);
-                if (settings.getBoolean("isKm", true)) {
-                    System.out.println("Was kilometers");
+                int distance = settings.getInt("distance", BeerApp.DEFAULT_DISTANCE);
+                if (settings.getBoolean("isKm", BeerApp.DEFAULT_UNIT_KM)) {
                     distance *= 1000;
                 }
                 HttpClient.pubsServing(point, beer.id, distance, new HttpCallback<ArrayList<Pub>>() {

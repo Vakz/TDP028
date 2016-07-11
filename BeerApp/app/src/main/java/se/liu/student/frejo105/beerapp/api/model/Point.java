@@ -4,9 +4,6 @@ import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by vakz on 2016-06-19.
- */
 public class Point
 implements Parcelable{
     public double latitude;

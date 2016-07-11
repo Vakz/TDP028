@@ -3,9 +3,6 @@ package se.liu.student.frejo105.beerapp.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by vakz on 2016-06-19.
- */
 public class Beer implements Parcelable {
     public int id;
     public String name;

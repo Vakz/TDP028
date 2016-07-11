@@ -10,9 +10,6 @@ import java.lang.reflect.Type;
 
 import se.liu.student.frejo105.beerapp.api.model.Beer;
 
-/**
- * Created by vakz on 2016-06-19.
- */
 public class BeerDeserializer implements JsonDeserializer<Beer> {
     @Override
     public Beer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

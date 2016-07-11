@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import se.liu.student.frejo105.beerapp.BeerApp;
 import se.liu.student.frejo105.beerapp.R;
 import se.liu.student.frejo105.beerapp.utility.Utility;
 
@@ -64,10 +65,10 @@ implements DialogInterface.OnClickListener {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.distance_units, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
-        s.setSelection(settings.getBoolean("isKm", true) ? 1 : 0);
-        ((CheckBox)view.findViewById(R.id.include_tested_input)).setChecked(settings.getBoolean("includeTested", true));
+        s.setSelection(settings.getBoolean("isKm", BeerApp.DEFAULT_UNIT_KM) ? 1 : 0);
+        ((CheckBox)view.findViewById(R.id.include_tested_input)).setChecked(settings.getBoolean("includeTested", BeerApp.DEFAULT_INCLUDE_TESTED));
         EditText input = ((EditText)view.findViewById(R.id.distance_input));
-        input.setText(Integer.toString(settings.getInt("distance", 20)), TextView.BufferType.EDITABLE);
+        input.setText(Integer.toString(settings.getInt("distance", BeerApp.DEFAULT_DISTANCE)), TextView.BufferType.EDITABLE);
     }
 
     @Override

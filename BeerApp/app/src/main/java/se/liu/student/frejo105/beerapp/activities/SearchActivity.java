@@ -16,7 +16,7 @@ import se.liu.student.frejo105.beerapp.api.model.Beer;
 import se.liu.student.frejo105.beerapp.fragments.BeerListFragment;
 import se.liu.student.frejo105.beerapp.R;
 
-public class SearchActivity extends DrawerMenuActivity
+public class SearchActivity extends BeerAppBaseActivity
 implements BeerListFragment.ItemSelectedInterface {
 
     public static final String QUERY_KEY = "QUERY";

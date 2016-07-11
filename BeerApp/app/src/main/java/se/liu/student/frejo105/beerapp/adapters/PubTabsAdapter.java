@@ -20,9 +20,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-/**
- * Created by vakz on 2016-06-28.
- */
 public class PubTabsAdapter extends FragmentPagerAdapter
 implements OnMapReadyCallback {
 

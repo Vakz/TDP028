@@ -8,9 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by vakz on 2016-06-22.
- */
 public class PersistentStorage extends SQLiteOpenHelper {
 
     /* https://developer.android.com/guide/topics/data/data-storage.html */
