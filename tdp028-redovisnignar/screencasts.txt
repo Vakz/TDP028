@@ -6,3 +6,5 @@ som presenterar tekniken och implementeringen ur ett tekniskt perspektiv.
 
 --------------------------------------------------------------------------------
 Användardemo: https://youtu.be/_0_awSglxS4
+
+Techdemo: https://www.youtube.com/watch?v=aJC5wYlGYSE
