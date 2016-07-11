@@ -122,8 +122,12 @@ impl Handler for Search {
             if let Some(query) = get_parameters(&["query"], r) {
 
                 let q = query.get("query").unwrap();
-                let b: Vec<Beer> = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), ModelConverter::beerrow).unwrap_or_default();
-                return json_response(json::encode(&b).unwrap());
+                if let Some(res) = get_all(self.db.prep_exec(r"CALL search(:query);", params!{"query" => q}), ModelConverter::beerrow) {
+                    return json_response(json::encode(&res).unwrap());
+                } else {
+                    return Ok(Response::with((status::NoContent)));
+                }
+
             }
             return Ok(Response::with((status::ServiceUnavailable, String::from("Unknown database error"))));
         }
@@ -205,7 +209,7 @@ impl Handler for GetNearbyPubs {
                     params!{"point" => String::from(loc), "distance" => distance.clone() }), ModelConverter::distancerow) {
                     return json_response(json::encode(&pubs).unwrap());
                 } else {
-                    return Ok(Response::with((status::UnprocessableEntity, String::from("No pubs within this distance"))));
+                    return Ok(Response::with((status::NoContent)));
                 }
             }
         }
@@ -264,7 +268,7 @@ impl Handler for ServingWithin {
                 params!{"id" => id, "point" => &String::from(loc), "distance" => &distance}), ModelConverter::distancerow) {
                     return json_response(json::encode(&p).unwrap());
                 } else {
-                    return Ok(Response::with((status::UnprocessableEntity, String::from("No pubs serving this beer within that distance"))));
+                    return Ok(Response::with((status::NoContent)));
                 }
 
             }
@@ -324,7 +328,7 @@ impl Handler for Suggestion {
                 params!{"point" => String::from(loc), "filter" => filter.clone()}), ModelConverter::beerrow) {
                     return json_response(json::encode(&b).unwrap());
                 }
-                return Ok(Response::with((status::UnprocessableEntity, String::from("Found no suggestions"))));
+                return Ok(Response::with((status::NoContent)));
             }
         }
         Ok(Response::with((status::UnprocessableEntity, String::from("Missing parameters"))))
@@ -343,7 +347,7 @@ impl Handler for Images {
         let path = Path::new("images/").join(name);
         let image = match File::open(path) {
             Ok(i) => i,
-            Err(_) => return Ok(Response::with((status::UnprocessableEntity, String::from("No file with that name"))))
+            Err(_) => return Ok(Response::with((status::NoContent)))
         };
         let content_type = "image/jpg".parse::<Mime>().unwrap();
         Ok(Response::with((status::Ok, image, content_type)))
