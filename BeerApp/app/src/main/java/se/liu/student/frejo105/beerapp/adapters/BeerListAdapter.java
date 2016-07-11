@@ -97,5 +97,6 @@ public class BeerListAdapter extends ArrayAdapter<Beer> {
     public void setBeerList(List<Beer> list) {
         this.list.clear();
         this.list.addAll(list);
+        this.notifyDataSetChanged();
     }
 }

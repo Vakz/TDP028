@@ -45,5 +45,6 @@ public class PubListAdapter extends ArrayAdapter<Pub> {
     public void setPubList(List<Pub> list) {
         this.items.clear();
         this.items.addAll(list);
+        this.notifyDataSetChanged();
     }
 }

@@ -106,9 +106,9 @@ implements PubListFragment.ItemSelectedInterface{
                 SharedPreferences settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
                 int distance = settings.getInt("distance", 20);
                 if (settings.getBoolean("isKm", true)) {
+                    System.out.println("Was kilometers");
                     distance *= 1000;
                 }
-
                 HttpClient.pubsServing(point, beer.id, distance, new HttpCallback<ArrayList<Pub>>() {
                     @Override
                     public void onSuccess(ArrayList<Pub> result) {

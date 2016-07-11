@@ -3,6 +3,7 @@ package se.liu.student.frejo105.beerapp.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
 import se.liu.student.frejo105.beerapp.R;
 import se.liu.student.frejo105.beerapp.adapters.PubListAdapter;
 import se.liu.student.frejo105.beerapp.api.model.Pub;
+import se.liu.student.frejo105.beerapp.utility.PersistentStorage;
+import se.liu.student.frejo105.beerapp.views.PlaceholderTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,9 +55,17 @@ public class PubListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        PlaceholderTextView ptv = (PlaceholderTextView)view.findViewById(R.id.pubs_serving_header);
+
+        SharedPreferences settings = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        String distance = Integer.toString(settings.getInt("distance", 20));
+        String unit = settings.getBoolean("isKm", true) ? " km" : " m";
+        ptv.setPlaceholder(distance + unit);
+
         items = new PubListAdapter(getContext(), new ArrayList<Pub>());
         ListView lw = ((ListView)view.findViewById(R.id.pub_list));
         lw.setAdapter(items);
+        lw.setEmptyView(view.findViewById(R.id.no_pub_list));
         lw.setOnItemClickListener(itemSelect);
         super.onViewCreated(view, savedInstanceState);
     }

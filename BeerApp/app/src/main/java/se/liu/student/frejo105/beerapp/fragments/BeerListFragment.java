@@ -60,6 +60,7 @@ public class BeerListFragment extends Fragment {
         this.items = new BeerListAdapter(getContext(), items);
         ListView lw = (ListView)view.findViewById(R.id.beer_list);
         lw.setAdapter(this.items);
+        lw.setEmptyView(view.findViewById(R.id.no_beer_list));
         lw.setOnItemClickListener(itemSelect);
         super.onViewCreated(view, savedInstanceState);
     }

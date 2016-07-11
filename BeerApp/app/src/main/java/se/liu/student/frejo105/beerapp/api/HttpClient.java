@@ -140,8 +140,13 @@ public class HttpClient {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                ArrayList<T> l = RegisteredGson.getInstance().fromJsonArray(responseString, typeOfT);
-                cb.onSuccess(l);
+                if (statusCode == 204) {
+                    cb.onSuccess(new ArrayList<T>());
+                }
+                else {
+                    ArrayList<T> l = RegisteredGson.getInstance().fromJsonArray(responseString, typeOfT);
+                    cb.onSuccess(l);
+                }
             }
         });
     }

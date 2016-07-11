@@ -10,5 +10,13 @@
         android:layout_height="match_parent"
         android:id="@+id/beer_list">
     </ListView>
+    <TextView
+        android:padding="20dp"
+        android:textStyle="bold"
+        android:id="@+id/no_beer_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/no_beer_result"/>
 
 </FrameLayout>
